@@ -1,6 +1,6 @@
-import fs from "fs";
+import { promises as fs } from "fs";
 
-class ProductManager {
+export default class ProductManager {
   #products;
   constructor() {
     this.#products = [];
@@ -8,10 +8,9 @@ class ProductManager {
     this.format = "utf-8";
   }
 
-  // leemos los productos y los parseamos de JSON. lo mismo, agregue un try catch para catchear el error, no pude encontrar la solucion
   readProducts = async () => {
     try {
-      const response = await fs.promises.readFile(this.path, this.format);
+      const response = await fs.readFile(this.path, this.format);
       return JSON.parse(response)
     }catch (err) {
       throw new Error(`Error al leer los productos ${err}`)
@@ -19,9 +18,6 @@ class ProductManager {
    
   }
 
-  // obtenemos los productos luego de leerlos y lo leemos por consola
-  //aca la realidad es que me da error de vez en cuando al ejecutar el archivo no se como podria hacer para solucionarlo.
-// tampoco entiendo muy bien por que sale ese error, normalmente me dice que el archivo .json no se puede leer y da error pense en poner un try y catch para catchear el error momentaneamente
   getProducts = async () => {
     try {
       const newResponse = await this.readProducts()
@@ -56,17 +52,22 @@ class ProductManager {
 
     this.#products.push(newProduct);
 
-    await fs.promises.writeFile(
-      this.path,
-      JSON.stringify(this.#products, null, '\t')
-    );
+    const jsonContent = JSON.stringify(this.#products, null, '\t');
+
+    try {
+      await fs.writeFile(this.path, jsonContent);
+      console.log("Product added successfully.");
+    } catch (err) {
+      throw new Error(`Error writing to JSON file: ${err}`);
+    }
   };
+
 
   deleteProduct = async (id) => {
     let response = await this.readProducts()
     let prodFilter = response.filter(prod => prod.id != id)
 
-    await fs.promises.writeFile(this.path, JSON.stringify(prodFilter, null, '\t'));
+    await fs.writeFile(this.path, JSON.stringify(prodFilter, null, '\t'));
 
     console.log('Producto eliminado')
   }
@@ -74,42 +75,67 @@ class ProductManager {
   updateProduct = async ({id, ...prod}) => {
     await this.deleteProduct(id)
     let product = await this.readProducts()
- // generamos un nuevo array para sobreescribir
     let newProd = [
       {id, ...prod},...product
     ]
-    await fs.promises.writeFile(this.path, JSON.stringify(newProd, null, '\t'));
+    await fs.writeFile(this.path, JSON.stringify(newProd, null, '\t'));
   }
 }
 
-const productManager = new ProductManager();
-productManager.addProduct(
-  "Remera1",
-  "Remera Negra",
-  4400,
-  "101",
-  20,
-  "imagen1"
-)
-productManager.addProduct(
-  "Remera2",
-  "Remera Blanca",
-  4600,
-  "102",
-  22,
-  "imagen2"
-)
+// const productManager = new ProductManager();
+
+// Add products
+// productManager.addProduct(
+//   "Remera1",
+//   "Remera Negra",
+//   4400,
+//   "101",
+//   20,
+//   "imagen1"
+// );
+// productManager.addProduct(
+//   "Remera2",
+//   "Remera Blanca",
+//   4600,
+//   "102",
+//   22,
+//   "imagen2"
+// );
+// productManager.addProduct(
+//   "Remera3",
+//   "Remera Verde",
+//   4200,
+//   "103",
+//   22,
+//   "imagen3"
+// );
+// productManager.addProduct(
+//   "Remera4",
+//   "Remera Roja",
+//   4700,
+//   "104",
+//   22,
+//   "imagen4"
+// );
+// productManager.addProduct(
+//   "Remera5",
+//   "Remera Azul",
+//   4500,
+//   "105",
+//   22,
+//   "imagen5"
+// );
+// productManager.addProduct(
+//   "Remera6",
+//   "Remera Bordo",
+//   4300,
+//   "106",
+//   22,
+//   "imagen6"
+// );
 
 //EJEMPLOS
-productManager.getProducts();
-productManager.getProductById(2)
-productManager.deleteProduct(1)
-productManager.updateProduct({
-  id: 2,
-  title: 'Remera2',
-  description: 'Remera Blanca',
-  price: 5000,
-  code: '102',
-  stock: 22,
-  thumbnail: 'imagen2'
-})
+// productManager.getProducts();
+// productManager.getProductById(2)
+// productManager.deleteProduct(1)
+
