@@ -15,18 +15,20 @@ export default class ProductManager {
     }catch (err) {
       throw new Error(`Error al leer los productos ${err}`)
     }
-   
+
+  }
+
+  writeProducts = async (product) => {
+    await fs.writeFile(this.path, JSON.stringify(product, null, '\t'))
   }
 
   getProducts = async () => {
     try {
-      const newResponse = await this.readProducts()
-      return console.log(newResponse)
-
+      return await this.readProducts()
     }catch (err) {
       console.error(`Error al buscar los productos ${err}`)
     }
-    
+
   };
 
   #generateId = () =>  this.#products.length === 0 ? 1 : this.#products[this.#products.length - 1].id + 1;
@@ -34,20 +36,16 @@ export default class ProductManager {
   getProductById = async (id) => {
     const res = await this.readProducts()
     const product = res.find( prod => prod.id === id)
-    console.log(product)
+
     if (!product) return "Not Found";
     return product;
   };
 
-  addProduct = async (title, description, price, code, stock, thumbnail) => {
+  // id: this.#generateId(),
+
+  addProduct = async (product) => {
     const newProduct = {
-      id: this.#generateId(),
-      title,
-      description,
-      price,
-      code,
-      stock,
-      thumbnail,
+      id: this.#generateId(), ...product
     };
 
     this.#products.push(newProduct);
@@ -56,20 +54,23 @@ export default class ProductManager {
 
     try {
       await fs.writeFile(this.path, jsonContent);
-      console.log("Product added successfully.");
+      return "Product added successfully."
     } catch (err) {
       throw new Error(`Error writing to JSON file: ${err}`);
     }
   };
 
-
+  // await fs.writeFile(this.path, JSON.stringify(prodFilter, null, '\t'));
   deleteProduct = async (id) => {
-    let response = await this.readProducts()
-    let prodFilter = response.filter(prod => prod.id != id)
-
-    await fs.writeFile(this.path, JSON.stringify(prodFilter, null, '\t'));
-
-    console.log('Producto eliminado')
+    let product = await this.readProducts()
+    let existId = product.some(prod => prod.id == id)
+    if(existId) {
+      let prodFilter = product.filter(prod => prod.id != id)
+      await this.writeProducts(prodFilter)
+      return "Producto Eliminado"
+    }else {
+      return "El producto a eliminar no existe"
+    }
   }
 
   updateProduct = async ({id, ...prod}) => {
@@ -79,63 +80,7 @@ export default class ProductManager {
       {id, ...prod},...product
     ]
     await fs.writeFile(this.path, JSON.stringify(newProd, null, '\t'));
+    
   }
+
 }
-
-// const productManager = new ProductManager();
-
-// Add products
-// productManager.addProduct(
-//   "Remera1",
-//   "Remera Negra",
-//   4400,
-//   "101",
-//   20,
-//   "imagen1"
-// );
-// productManager.addProduct(
-//   "Remera2",
-//   "Remera Blanca",
-//   4600,
-//   "102",
-//   22,
-//   "imagen2"
-// );
-// productManager.addProduct(
-//   "Remera3",
-//   "Remera Verde",
-//   4200,
-//   "103",
-//   22,
-//   "imagen3"
-// );
-// productManager.addProduct(
-//   "Remera4",
-//   "Remera Roja",
-//   4700,
-//   "104",
-//   22,
-//   "imagen4"
-// );
-// productManager.addProduct(
-//   "Remera5",
-//   "Remera Azul",
-//   4500,
-//   "105",
-//   22,
-//   "imagen5"
-// );
-// productManager.addProduct(
-//   "Remera6",
-//   "Remera Bordo",
-//   4300,
-//   "106",
-//   22,
-//   "imagen6"
-// );
-
-//EJEMPLOS
-// productManager.getProducts();
-// productManager.getProductById(2)
-// productManager.deleteProduct(1)
-
