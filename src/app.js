@@ -19,9 +19,7 @@ app.get("/products", async (req, res) => {
 
 app.get("/products/:pid", async (req, res) => {
     let id = parseInt(req.params.pid)
-    let allProd = await products.getProducts()
-    let productById = allProd.find(prod => prod.id == id)
-    res.send(productById)
+    res.send(await products.getProductById(id))
 })
 
 //POST
@@ -32,16 +30,17 @@ app.post("/products", async (req, res) => {
 
 //PUT 
 
-app.put("/products/:id", async (req, res) => {
-    let id = parseInt(req.params.id)
+app.put("/products/:pid", async (req, res) => {
+    let id = parseInt(req.params.pid)
     let updateProduct = req.body
-    res.status(200).send(await products.updateProduct(updateProduct))
+    res.send(await products.updateProduct(id, updateProduct))
 })
 
 // DELETE 
 app.delete("/products/:id", async (req, res) => {
     let id = parseInt(req.params.id)
     res.send(await products.deleteProduct(id))
+
 })
 
 //SERVER

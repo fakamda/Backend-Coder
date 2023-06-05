@@ -22,6 +22,12 @@ export default class ProductManager {
     await fs.writeFile(this.path, JSON.stringify(product, null, '\t'))
   }
 
+  existProducts = async (id) => {
+    let products = await this.readProducts()
+    return products.find(prod => prod.id == id)
+ 
+  }
+
   getProducts = async () => {
     try {
       return await this.readProducts()
@@ -29,38 +35,36 @@ export default class ProductManager {
       console.error(`Error al buscar los productos ${err}`)
     }
 
-  };
+  }
 
   #generateId = () =>  this.#products.length === 0 ? 1 : this.#products[this.#products.length - 1].id + 1;
 
+
   getProductById = async (id) => {
-    const res = await this.readProducts()
-    const product = res.find( prod => prod.id === id)
+    let productById = await this.existProducts(id)
+    if(!productById) return "Not Found"
+    return productById
 
-    if (!product) return "Not Found";
-    return product;
-  };
-
-  // id: this.#generateId(),
+  }
 
   addProduct = async (product) => {
+    const oldProducts = await this.readProducts();
+
     const newProduct = {
       id: this.#generateId(), ...product
-    };
+    }
+
+    const allProducts = [...oldProducts, newProduct]
 
     this.#products.push(newProduct);
 
-    const jsonContent = JSON.stringify(this.#products, null, '\t');
+    await this.writeProducts(allProducts);
 
-    try {
-      await fs.writeFile(this.path, jsonContent);
-      return "Product added successfully."
-    } catch (err) {
-      throw new Error(`Error writing to JSON file: ${err}`);
-    }
-  };
-
-  // await fs.writeFile(this.path, JSON.stringify(prodFilter, null, '\t'));
+    if(!newProduct) return "The product cannot be added"
+    return "Product added successfully."
+  }
+  
+  
   deleteProduct = async (id) => {
     let product = await this.readProducts()
     let existId = product.some(prod => prod.id == id)
@@ -73,14 +77,16 @@ export default class ProductManager {
     }
   }
 
-  updateProduct = async ({id, ...prod}) => {
+  updateProduct = async (id, product) => {
+    let productById = await this.existProducts(id)
+    if(!productById) return "Not found"
     await this.deleteProduct(id)
-    let product = await this.readProducts()
-    let newProd = [
-      {id, ...prod},...product
-    ]
-    await fs.writeFile(this.path, JSON.stringify(newProd, null, '\t'));
-    
+    let oldProduct = await this.readProducts()
+    let products = [{id : id, ...product}, ...oldProduct]
+    await this.writeProducts(products)
+    return "Updated product"
+
   }
 
 }
+   
