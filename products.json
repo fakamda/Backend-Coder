@@ -1,20 +1,28 @@
 [
 	{
-		"id": 1,
+		"id": 2,
 		"title": "Remera1",
-		"description": "Remera Negra",
-		"price": 4400,
-		"code": "101",
+		"description": "Remera verde buena onda",
+		"code": "26",
+		"price": 11000,
+		"status": true,
 		"stock": 20,
-		"thumbnail": "imagen1"
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
 	},
 	{
-		"id": 2,
+		"id": 3,
 		"title": "Remera2",
-		"description": "Remera Blanca",
-		"price": 4600,
-		"code": "102",
-		"stock": 22,
-		"thumbnail": "imagen2"
+		"description": "Remera negra buena onda",
+		"code": "24",
+		"price": 10000,
+		"status": true,
+		"stock": 30,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_negra"
+		]
 	}
 ]
