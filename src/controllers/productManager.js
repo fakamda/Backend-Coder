@@ -47,6 +47,9 @@ export default class ProductManager {
 
   }
 
+  // aca modifique el metodo para que traiga el array viejo antes de agregar el nuevo producto, por que me estaba borrando el viejo cada vez que cargaba uno
+  // no se si haya algo demas pero me funciono asi, tambien tuve varios problemas con el id dinamico jaja pero seguro hay alguna libreria para esto 
+
   addProduct = async (product) => {
     const oldProducts = await this.readProducts();
 
@@ -64,7 +67,7 @@ export default class ProductManager {
     return "Product added successfully."
   }
   
-  
+
   deleteProduct = async (id) => {
     let product = await this.readProducts()
     let existId = product.some(prod => prod.id == id)
@@ -76,6 +79,8 @@ export default class ProductManager {
       return "El producto a eliminar no existe"
     }
   }
+
+// TANTO ESTE METODO COMO EL ANTERIOR ME COSTARON HORRORES HACERLOS FUNCIONAR PERO DESPUES DE TANTO SE PUDO JAJA
 
   updateProduct = async (id, product) => {
     let productById = await this.existProducts(id)
