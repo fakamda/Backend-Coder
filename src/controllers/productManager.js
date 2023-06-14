@@ -1,10 +1,12 @@
 import { promises as fs } from "fs";
 
+
+
 export default class ProductManager {
   #products;
   constructor() {
     this.#products = [];
-    this.path = "../products.json";
+    this.path = "./src/models/products.json";
     this.format = "utf-8";
   }
 
@@ -37,7 +39,10 @@ export default class ProductManager {
 
   }
 
-  #generateId = () =>  this.#products.length === 0 ? 1 : this.#products[this.#products.length - 1].id + 1;
+  // #generateId = () =>  this.#products.length === 0 ? 1 : this.#products[this.#products.length - 1].id + 1;
+  #generateId = (data) => {
+    return (data.length === 0 ) ? 1 : data[data.length - 1].id +1
+  }
 
 
   getProductById = async (id) => {
@@ -50,11 +55,15 @@ export default class ProductManager {
   // aca modifique el metodo para que traiga el array viejo antes de agregar el nuevo producto, por que me estaba borrando el viejo cada vez que cargaba uno
   // no se si haya algo demas pero me funciono asi, tambien tuve varios problemas con el id dinamico jaja pero seguro hay alguna libreria para esto 
 
+  // if(!product.title || !product.description || !product.price || !product.code || !product.stock)
+  //   return '[Err] required fields missing'
+
   addProduct = async (product) => {
     const oldProducts = await this.readProducts();
 
+
     const newProduct = {
-      id: this.#generateId(), ...product
+      id: this.#generateId(oldProducts), status:true, thumbnails: [], ...product
     }
 
     const allProducts = [...oldProducts, newProduct]

@@ -1,0 +1,34 @@
+
+<h2 class="mainTitle">Real Time Products</h2>
+<div class="formAndProductsContainer">
+    <form class="formContainer" action="">
+        <h3 class="tituloForm">Ingrese un producto</h3>
+        <label class="formLabel" for="title">Título: <input type="text" name="title" id="inputTitle" class="inputForm" placeholder="ej: remera azul"></label>
+        <label class="formLabel" for="description">Descripción: <input type="text" name="description" id="inputDescription" class="inputForm" placeholder="ej: remera azul bonita"></label>
+        <label class="formLabel" for="price">Precio: <input type="text" name="price" id="inputPrice" class="inputForm" placeholder="ej: 6700"></label>
+        <label class="formLabel" for="code">Código: <input type="text" name="code" id="inputCode" class="inputForm" placeholder="ej: 102"></label>
+        <label class="formLabel" for="stock">Stock: <input type="text" name="stock" id="inputStock" class="inputForm" placeholder="ej: 15"></label>
+        <label class="formLabel" for="category">Categoría: <input type="text" name="category" id="inputCategory" class="inputForm" placeholder="remeras"></label>
+        <button class="buttonForm" id="createProduct" >Crear Producto</button>
+    </form>
+    
+    <div class="containerRealTimeProducts" id="realTimeProductsBox">
+        {{#each products}}
+        <div class="containerProductWithId">
+            <p class="idProducto">{{this.id}}</p>
+            <div class="containerProductInfo">
+                <h5>{{this.title}}</h5>
+                <p class="estiloTexto"><b>Descripción:</b> {{this.description}}</p>
+                <p class="estiloTexto"><b>Código:</b> {{this.code}}</p>
+                <p class="estiloTexto"><b>Stock:</b> {{this.stock}}</p>
+                <p class="estiloTexto"><b>Precio:</b> {{this.price}}</p>
+                <p class="estiloTexto"><b>Categoria:</b> {{this.category}}</p>
+            </div>
+            <button class="deleteButtonProduct" onclick="deleteProduct({{this.id}})">Eliminar</button>
+        </div>
+        {{/each}}
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

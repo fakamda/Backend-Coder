@@ -1,0 +1,132 @@
+[
+	{
+		"id": 1,
+		"title": "Remera 1",
+		"description": "Remera amarilla buena onda",
+		"code": "10",
+		"price": 10000,
+		"status": true,
+		"stock": 10,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 2,
+		"title": "Remera 2",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11000,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 3,
+		"title": "Remera 3",
+		"description": "Remera negra buena onda",
+		"code": "12",
+		"price": 10000,
+		"status": true,
+		"stock": 30,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_negra"
+		]
+	},
+	{
+		"id": 4,
+		"title": "Remera 4",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11000,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 5,
+		"title": "Remera 5",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11100,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 6,
+		"title": "Remera 6",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11500,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 7,
+		"title": "Remera 7",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 12000,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 8,
+		"title": "Remera 8",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11100,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 9,
+		"title": "Remera 9",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 9000,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	},
+	{
+		"id": 10,
+		"title": "Remera 10",
+		"description": "Remera verde buena onda",
+		"code": "11",
+		"price": 11500,
+		"status": true,
+		"stock": 20,
+		"category": "remeras",
+		"thumbnails": [
+			"./public/assets/remera_verde"
+		]
+	}
+]

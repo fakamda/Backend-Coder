@@ -1,10 +1,12 @@
 {
   "name": "desafio-2",
   "version": "1.0.0",
-  "main": "desafio-1.js",
+  "main": "src/app.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node .",
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",
@@ -22,6 +24,8 @@
     "nodemon": "^2.0.22"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "socket.io": "^4.6.2"
   }
 }

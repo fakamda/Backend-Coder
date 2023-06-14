@@ -7,7 +7,7 @@ class CartManager {
   #carts;
   constructor() {
     this.#carts = [];
-    this.path = "../carts.json";
+    this.path = "./src/models/carts.json";
     this.format = "utf-8";
   }
 
