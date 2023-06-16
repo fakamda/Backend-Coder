@@ -1,34 +1,73 @@
+<div class="container">
+  <h2 class="h2-title">Real Time Products</h2>
 
-<h2 class="mainTitle">Real Time Products</h2>
-<div class="formAndProductsContainer">
-    <form class="formContainer" action="">
-        <h3 class="tituloForm">Ingrese un producto</h3>
-        <label class="formLabel" for="title">Título: <input type="text" name="title" id="inputTitle" class="inputForm" placeholder="ej: remera azul"></label>
-        <label class="formLabel" for="description">Descripción: <input type="text" name="description" id="inputDescription" class="inputForm" placeholder="ej: remera azul bonita"></label>
-        <label class="formLabel" for="price">Precio: <input type="text" name="price" id="inputPrice" class="inputForm" placeholder="ej: 6700"></label>
-        <label class="formLabel" for="code">Código: <input type="text" name="code" id="inputCode" class="inputForm" placeholder="ej: 102"></label>
-        <label class="formLabel" for="stock">Stock: <input type="text" name="stock" id="inputStock" class="inputForm" placeholder="ej: 15"></label>
-        <label class="formLabel" for="category">Categoría: <input type="text" name="category" id="inputCategory" class="inputForm" placeholder="remeras"></label>
-        <button class="buttonForm" id="createProduct" >Crear Producto</button>
-    </form>
-    
-    <div class="containerRealTimeProducts" id="realTimeProductsBox">
-        {{#each products}}
-        <div class="containerProductWithId">
-            <p class="idProducto">{{this.id}}</p>
-            <div class="containerProductInfo">
-                <h5>{{this.title}}</h5>
-                <p class="estiloTexto"><b>Descripción:</b> {{this.description}}</p>
-                <p class="estiloTexto"><b>Código:</b> {{this.code}}</p>
-                <p class="estiloTexto"><b>Stock:</b> {{this.stock}}</p>
-                <p class="estiloTexto"><b>Precio:</b> {{this.price}}</p>
-                <p class="estiloTexto"><b>Categoria:</b> {{this.category}}</p>
-            </div>
-            <button class="deleteButtonProduct" onclick="deleteProduct({{this.id}})">Eliminar</button>
-        </div>
-        {{/each}}
+  <hr class=""/>
+
+  <div class="form-container">
+    <div class="form-title">
+      <h5>Created Products</h5>
     </div>
-</div>
+    <div class="form-text">
+      <form id="form">
+        <div class="mb-2">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-input" name="title" id="title" required/>
+        </div>
+        <div class="mb-2">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-input" name="description" id="description" required/>
+        </div>
+        <div class="mb-2">
+          <label for="Price" class="form-label">Price</label>
+          <input type="number" class="form-input" name="Price" id="Price" step="0.01"required/>
+        </div>
+        <div class="mb-2">
+          <label for="code" class="form-label">Code</label>
+          <input type="text" class="form-input" name="code" id="code" required/>
+        </div>
+        <div class="mb-2">
+          <label for="category" class="form-label">Category</label>
+          <input type="text" class="form-input" name="category" id="category" required />
+        </div>
+        <div class="mb-2">
+          <label for="Stock" class="form-label">Stock</label>
+          <input type="number" class="form-input" name="Stock" id="Stock" required />
+        </div>
+        <button type="submit" class="btn-create" id="addProduct">Create Product</button>
+      </form>
+    </div>
+  </div>
 
+  <hr class=""/>
+
+  <table class="table-container" id="productsTable">
+    <thead class="table-title">
+      <tr>
+        <th class="table-row">Title</th>
+        <th class="table-row">Description</th>
+        <th class="table-row">Price</th>
+        <th class="table-row">Code</th>
+        <th class="table-row">Category</th>
+        <th class="table-row">Stock</th>
+        <th class="table-row">Delete</th>
+      </tr> 
+    </thead>
+    <tbody id="tbody">
+      {{#each allProducts}}
+        <tr>
+          <td class="table-row">{{this.title}}</td>
+          <td class="table-row">{{this.description}}</td>
+          <td class="table-row">{{this.price}}</td>
+          <td class="table-row">{{this.code}}</td>
+          <td class="table-row">{{this.category}}</td>
+          <td class="table-row">{{this.stock}}</td>
+          <td class="table-row">
+            <button class="btn-delete" onclick="deleteProduct({{this.id}})" id="btnDelete">Eliminar</button>
+          </td class="table-row">
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

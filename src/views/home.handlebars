@@ -1,17 +1,26 @@
-
-<h1 class="mainTitle">Products</h1>
-<div class="generalContainer">       
-    {{#each products}}
-    <div class="containerProductWithId">
-        <p class="idProducto">{{this.id}}</p>
-        <div class="containerProductInfo">
-            <h4>{{this.title}}</h4>
-            <p class="estiloTexto"><b>Descripción:</b> {{this.description}}</p>
-            <p class="estiloTexto"><b>Código:</b> {{this.code}}</p>
-            <p class="estiloTexto"><b>Stock:</b> {{this.stock}}</p>
-            <p class="estiloTexto"><b>Precio:</b> {{this.price}}</p>
-            <p class="estiloTexto"><b>Categoria:</b> {{this.category}}</p>
-        </div>
-    </div>
-    {{/each}}
+<h2 class="h2-title">Products</h2>
+<table class="table-container" id="productsTable">
+    <thead class="table-title">
+      <tr>
+        <th class="table-row">Title</th>
+        <th class="table-row">Description</th>
+        <th class="table-row">Price</th>
+        <th class="table-row">Code</th>
+        <th class="table-row">Category</th>
+        <th class="table-row">Stock</th>
+      </tr> 
+    </thead>
+    <tbody id="tbody">
+      {{#each allProducts}}
+        <tr>
+          <td class="table-row">{{this.title}}</td>
+          <td class="table-row">{{this.description}}</td>
+          <td class="table-row">{{this.price}}</td>
+          <td class="table-row">{{this.code}}</td>
+          <td class="table-row">{{this.category}}</td>
+          <td class="table-row">{{this.stock}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </div>

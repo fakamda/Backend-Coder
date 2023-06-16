@@ -1,76 +1,91 @@
-const socket = io()
-let containerProducts = document.getElementById('realTimeProductsBox')
+const socket = io();
 
-document.getElementById('createProduct').addEventListener('click', (e) => {
-    e.preventDefault()
-    const body = {
-        title: document.getElementById('inputTitle').value,
-        description: document.getElementById('inputDescription').value,
-        price: Number(document.getElementById('inputPrice').value),
-        code: document.getElementById('inputCode').value,
-        stock: Number(document.getElementById('inputStock').value),
-        category: document.getElementById('inputCategory').value
+const form = document.getElementById("form");
+const productsTable = document.getElementById("productsTable");
+const tbody = productsTable.querySelector("#tbody");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault()
+
+
+  let product = {
+    title: document.getElementById("title").value,
+    description: document.getElementById("description").value,
+    price: document.getElementById("Price").value,
+    code: document.getElementById("code").value,
+    category: document.getElementById("category").value,
+    stock: document.getElementById("Stock").value,
+  };
+
+
+  const res = await fetch("/api/products", {
+    method: "post",
+    body: JSON.stringify(product),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  try {
+    const result = await res.json();
+    if (result.status === "error") {
+      throw new Error(result.error);
+    } else {
+      const resultProducts = await fetch("/api/products");
+      const results = await resultProducts.json();
+      if (results.status === "error") {
+        throw new Error(results.error);
+      } else {
+        socket.emit("productList", results.products);
+
+        alert("Product added successfully")
+
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("Price").value = "";
+        document.getElementById("code").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("Stock").value = "";
+      }
     }
-    fetch('/api/products', {
-        method: 'post',
-        body: JSON.stringify(body),
-        headers: {
-            'Content-type': 'application/json'
-        },
-    })
-        .then(result => result.json())
-        .then(result => {
-            if(result.status == 'error') throw new Error(result.error)
-        })
-        .then(() => fetch('/api/products'))
-        .then(result => result.json())
-        .then(result => {
-            if(result.status == 'error') throw new Error(result.error)
-            else {
-                socket.emit('productList', body)
-            }
-            alert('Producto creado ha sido añadido.')
-            document.getElementById('inputTitle').value = ''
-            document.getElementById('inputDescription').value = ''
-            document.getElementById('inputPrice').value = ''
-            document.getElementById('inputCode').value = ''
-            document.getElementById('inputStock').value = ''
-            document.getElementById('inputCategory').value = ''
-        })
-        .catch(err => alert(`Ocurrio un error : (\n${err}`))
-})
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-deleteProduct = (id) => {
-    fetch(`/api/products/${id}`, {
-        method: 'delete'
-    })
-        .then(result => result.json())
-        .then(result => {
-            if(result.status === 'error') throw new Error(result.error)
-            alert('Producto Eliminado con exito.')
-        })
-        .catch(err => alert(`Ocurrio un error: (\n${err})`))
-}
 
-socket.on('updatedProducts', data => {
-    if (data !== null) {
-        containerProducts.innerHTML = '';
-        data.forEach(product => {
-            let productHtml = `
-                <div class="containerProductWithId" id="${product.id}">
-                    <button class="deleteButtonProduct" onclick="deleteProduct('${product.id}')">Eliminar</button>
-                    <p class="idProducto">${product.id}</p>
-                    <div class="containerProductInfo">
-                        <h1>${product.title}</h1>
-                        <p class="estiloTexto"><b>Descripción:</b> ${product.description}</p>
-                        <p class="estiloTexto"><b>Código:</b> ${product.code}</p>
-                        <p class="estiloTexto"><b>Stock:</b> ${product.stock}</p>
-                        <p class="estiloTexto"><b>Precio:</b> ${product.price}</p>
-                        <p class="estiloTexto"><b>Categoria:</b> ${product.category}</p>
-                    </div>
-                </div>
-            `;
-            containerProducts.innerHTML = productHtml;
-        });
-    }
+const deleteProduct = async (id) => {
+  try {
+    const res = await fetch(`/api/products/${id}`, {
+      method: "DELETE",
+    });
+    const result = await res.json();
+    if (result.status === "error") throw new Error(result.error);
+    else socket.emit("productList", result.products);
+
+    alert("Product removed successfully")
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+socket.on("updatedProducts", (products) => {
+
+  tbody.innerHTML = "";
+
+  products.forEach((item) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+        <td class="table-row">${item.title}</td>
+        <td class="table-row">${item.description}</td>
+        <td class="table-row">${item.price}</td>
+        <td class="table-row">${item.code}</td>
+        <td class="table-row">${item.category}</td>
+        <td class="table-row">${item.stock}</td>
+        <td class="table-row">
+          <button class="btn-delete" onclick="deleteProduct(${item.id})" id="btnDelete">Eliminar</button>
+        </td>
+      `;
+    tbody.appendChild(row);
+  });
 });

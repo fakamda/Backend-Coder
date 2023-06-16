@@ -1,64 +1,130 @@
-import { Router } from "express"
-import ProductManager from '../controllers/productManager.js';
-
-const router = Router()
+import { Router } from "express";
+import ProductManager from "../controllers/ProductManager.js";
 
 const productManager = new ProductManager();
 
+const router = Router();
 
-router.get('/', async(req, res) => {
-    let limit = parseInt(req.query.limit)
-    let products = await productManager.getProducts()
-    if(!limit){ 
-        return res.status(200).json({ products })
+router.get("/", async (req, res) => {
+  const limit = req.query.limit;
+
+  const products = await productManager.getProducts();
+
+  if (limit) {
+    const limitedProducts = products.slice(0, limit);
+    res.json(limitedProducts);
+  } else {
+    res.json({ products: products });
+  }
+});
+
+router.get("/:pid", async (req, res) => {
+  const productId = parseInt(req.params.pid);
+  const product = await productManager.getProductById(productId);
+  if (!product) {
+    return res.status(404).json({
+      error: `El producto con el id ${productId} no se ha encontrado`,
+    });
+  }
+  res.json({ product: product });
+});
+
+router.post("/", async (req, res) => {
+  try {
+    let {
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock,
+    } = req.body;
+
+    if (!title || !description || !code || !price || !stock || !category) {
+      return res
+        .status(400)
+        .json({ error: "Todos los campos son obligatorios" });
     }
-    let limitAndIdExist = products.some(prod => prod.id == limit)
-    if(limitAndIdExist){
-        let productLimit = products.slice(0, limit)
-        return res.status(200).json({ message: `productos desde el 0 hasta ${limit}`, products: productLimit})
+    const addProduct = await productManager.addProduct(
+      title,
+      description,
+      price,
+      thumbnail,
+      code,
+      category,
+      stock
+    );
+
+    if (addProduct) {
+      const products = await productManager.getProducts();
+      req.app.get("socketio").emit("updatedProducts", products);
+
+      return res.status(201).json({
+        message: "Producto agregado exitosamente",
+        product: addProduct,
+      });
     }
-    return res.status(404).json({ message: `Error! Solo, el producto no existe!`})
-})
 
+    return res.status(404).json({ error: "Error al agregar el producto" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "error en el servidor" });
+  }
+});
 
-router.get('/:pid', async(req, res) => {
-    let id = parseInt(req.params.pid)
-    let productById = await productManager.getProductById(id)
-    if(!productById){
-        return res.status(404).json({ error: `Error! No existe el id(${id}) en esta lista.` })
-    }else{
-        return res.status(200).json({ product: productById })
+router.put("/:pid", async (req, res) => {
+  try {
+    const productId = parseInt(req.params.pid);
+    const products = await productManager.getProducts();
+    if (req.body.id !== productId && req.body.id !== undefined) {
+      return res
+        .status(404)
+        .json({ error: "No se puede modificar el id del producto" });
     }
-})
 
+    const updated = req.body;
+    const productFind = await products.find((prod) => prod.id === productId);
+    if (!productFind) {
+      return res
+        .status(404)
+        .json({ error: `No existe el producto con el id: ${productId}` });
+    }
 
-router.post('/', async(req, res) => {
-    let newProduct = req.body
-    const products = await productManager.addProduct(newProduct)
-    req.io.emit('updatedProducts', products)
-    return res.status(200).json({ message: 'Producto Agregado'})    
-})
+    await productManager.updateProduct(productId, updated);
 
+    const updatedProducts = await productManager.getProducts();
 
-router.put('/:pid', async(req, res) => {
-    let id = parseInt(req.params.pid)
-    let data = req.body
-    let productUpdated = await productManager.updateProduct(id, data)
-    if(!productUpdated) return res.status(404).json({ message: 'Producto No Encontrado.'})
-        req.io.emit('updatedProducts', await readProducts)
-        return res.status(200).json({ message: 'Producto Actualizado' })
-})
+    req.app.get("socketio").emit("updatedProducts", updatedProducts);
+    res.json({ message: `Actualizando el producto con el id: ${productId}` });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
 
-
-router.delete('/:pid', async(req, res) => {
-    let id = parseInt(req.params.pid)
-    let products = await productManager.getProducts()
-    let productExists = products.some(prod => prod.id == id)
-    if(!productExists) return res.status(404).json({ message: `Producto a eliminar con id: ${id} no existe.`})
-    let productsUpdated = await productManager.deleteProduct(id)
-    req.io.emit('updatedProducts', productsUpdated)
-    return res.status(200).json({ message: `el producto con id: ${id} ha sido eliminado.` })
-
-})
+router.delete("/:pid", async (req, res) => {
+  try {
+    const productId = parseInt(req.params.pid);
+    const products = await productManager.getProducts();
+    const productFind = await products.find((prod) => prod.id === productId);
+    if (!productFind) {
+      return res
+        .status(404)
+        .json({ error: `No existe el producto con el id: ${productId}` });
+    }
+    const deleteProduct = await productManager.deleteProduct(productId);
+    console.log(deleteProduct);
+    const updatedProducts = await productManager.getProducts();
+    req.app.get("socketio").emit("updatedProducts", updatedProducts);
+    res.json({
+      message: `Producto con el id ${productId} eliminado con exito`,
+      products: await productManager.getProducts(),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error });
+  }
+});
 
 export default router

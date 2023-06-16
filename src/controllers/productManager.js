@@ -1,13 +1,25 @@
 import { promises as fs } from "fs";
 
-
-
 export default class ProductManager {
   #products;
   constructor() {
     this.#products = [];
     this.path = "./src/models/products.json";
     this.format = "utf-8";
+  }
+
+  #validateProduct = async (product) => {
+    const products = await this.getProducts()
+
+    const existProduct = await products.find(
+      (prod) => prod.code === product.code
+    )
+    if (existProduct !== undefined) {
+      console.log("Ya existe un producto con el mismo código");
+      return false;
+    }
+
+    return true;
   }
 
   readProducts = async () => {
@@ -39,7 +51,7 @@ export default class ProductManager {
 
   }
 
-  // #generateId = () =>  this.#products.length === 0 ? 1 : this.#products[this.#products.length - 1].id + 1;
+
   #generateId = (data) => {
     return (data.length === 0 ) ? 1 : data[data.length - 1].id +1
   }
@@ -51,31 +63,33 @@ export default class ProductManager {
     return productById
 
   }
+  
+  addProduct = async (title, description, price, thumbnail, code, category, stock) => {
 
-  // aca modifique el metodo para que traiga el array viejo antes de agregar el nuevo producto, por que me estaba borrando el viejo cada vez que cargaba uno
-  // no se si haya algo demas pero me funciono asi, tambien tuve varios problemas con el id dinamico jaja pero seguro hay alguna libreria para esto 
-
-  // if(!product.title || !product.description || !product.price || !product.code || !product.stock)
-  //   return '[Err] required fields missing'
-
-  addProduct = async (product) => {
-    const oldProducts = await this.readProducts();
-
+    const products = await this.getProducts();
 
     const newProduct = {
-      id: this.#generateId(oldProducts), status:true, thumbnails: [], ...product
+      id: await this.#generateId(products),
+      title,
+      description,
+      price,
+      thumbnail: thumbnail || [],
+      code,
+      category,
+      stock,
+      status: true,
     }
 
-    const allProducts = [...oldProducts, newProduct]
+    if (await this.#validateProduct(newProduct)) {
+      products.push(newProduct)
 
-    this.#products.push(newProduct);
+      await this.writeProducts(products)
+      this.products = products
+      return newProduct
 
-    await this.writeProducts(allProducts);
-
-    if(!newProduct) return "The product cannot be added"
-    return "Product added successfully."
+    }
   }
-  
+
 
   deleteProduct = async (id) => {
     let product = await this.readProducts()
@@ -89,7 +103,7 @@ export default class ProductManager {
     }
   }
 
-// TANTO ESTE METODO COMO EL ANTERIOR ME COSTARON HORRORES HACERLOS FUNCIONAR PERO DESPUES DE TANTO SE PUDO JAJA
+
 
   updateProduct = async (id, product) => {
     let productById = await this.existProducts(id)
