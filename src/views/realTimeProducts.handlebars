@@ -40,34 +40,7 @@
 
   <hr class=""/>
 
-  <table class="table-container" id="productsTable">
-    <thead class="table-title">
-      <tr>
-        <th class="table-row">Title</th>
-        <th class="table-row">Description</th>
-        <th class="table-row">Price</th>
-        <th class="table-row">Code</th>
-        <th class="table-row">Category</th>
-        <th class="table-row">Stock</th>
-        <th class="table-row">Delete</th>
-      </tr> 
-    </thead>
-    <tbody id="tbody">
-      {{#each allProducts}}
-        <tr>
-          <td class="table-row">{{this.title}}</td>
-          <td class="table-row">{{this.description}}</td>
-          <td class="table-row">{{this.price}}</td>
-          <td class="table-row">{{this.code}}</td>
-          <td class="table-row">{{this.category}}</td>
-          <td class="table-row">{{this.stock}}</td>
-          <td class="table-row">
-            <button class="btn-delete" onclick="deleteProduct({{this.id}})" id="btnDelete">Eliminar</button>
-          </td class="table-row">
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  {{> table}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>

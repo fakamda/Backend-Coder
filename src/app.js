@@ -4,8 +4,11 @@ import { Server } from 'socket.io'
 import viewsRouter from './router/views.routes.js'
 import ProductRouter from './router/product.routes.js'
 import CartRouter from './router/carts.routes.js'
+import mongoose from 'mongoose'
 
-
+const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.b5lk3ud.mongodb.net/'
+// const MONGO_URI = 'mongodb://localhost:27017/'
+const MONGO_DB_NAME = 'ecommerce'
 
 const app = express()
 app.use(express.json())
@@ -14,7 +17,7 @@ const PORT = 8080
 
 const serverHttp = app.listen(PORT, () =>
   console.log(`Listening on port ${PORT}`)
-);
+)
 const io = new Server(serverHttp)
 
 app.set("socketio", io)
@@ -24,15 +27,30 @@ app.engine("handlebars", handlebars.engine());
 app.set('views', './src/views')
 app.set("view engine", "handlebars")
 
-app.get("/", (req, res) => res.render("index", {name:"Facundo"}))
+mongoose.set('strictQuery', false)
 
-app.use("/api/products", ProductRouter)
-app.use("/api/carts", CartRouter)
-app.use("/products", viewsRouter)
+try {
+   await mongoose.connect(MONGO_URI, {
+    dbName: MONGO_DB_NAME,
+    useUnifiedTopology: true
+   })
+   console.log('Db Connected')
 
-io.on("connection", socket => {
-  console.log("Successful Connection")
-  socket.on("productList", data => {
+   app.get("/", (req, res) => res.render("index", {name:"Facundo"}))
+
+    app.use("/api/products", ProductRouter)
+    app.use("/api/carts", CartRouter)
+    app.use("/products", viewsRouter)
+
+    io.on("connection", socket => {
+    console.log("Successful Connection")
+    socket.on("productList", data => {
     io.emit("updatedProducts", data)
   })
 })
+
+} catch(err) {
+    console.log(err.message)
+}
+
+

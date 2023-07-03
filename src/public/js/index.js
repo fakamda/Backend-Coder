@@ -7,7 +7,7 @@ const tbody = productsTable.querySelector("#tbody");
 form.addEventListener("submit", async (e) => {
   e.preventDefault()
 
-
+  
   let product = {
     title: document.getElementById("title").value,
     description: document.getElementById("description").value,
@@ -17,14 +17,16 @@ form.addEventListener("submit", async (e) => {
     stock: document.getElementById("Stock").value,
   };
 
+  console.log(product)
 
   const res = await fetch("/api/products", {
-    method: "post",
+    method: "POST",
     body: JSON.stringify(product),
     headers: {
       "Content-Type": "application/json",
     },
-  });
+  })
+
   try {
     const result = await res.json();
     if (result.status === "error") {
@@ -32,12 +34,12 @@ form.addEventListener("submit", async (e) => {
     } else {
       const resultProducts = await fetch("/api/products");
       const results = await resultProducts.json();
-      if (results.status === "error") {
+      if (result.status === "error") {
         throw new Error(results.error);
       } else {
-        socket.emit("productList", results.products);
+        socket.emit("updatedProducts", result.payload);
 
-        alert("Product added successfully")
+        alert("Product added successfully");
 
         document.getElementById("title").value = "";
         document.getElementById("description").value = "";
@@ -52,40 +54,37 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-
-const deleteProduct = async (id) => {
+const deleteProduct = async (_id) => {
   try {
-    const res = await fetch(`/api/products/${id}`, {
+    const res = await fetch(`/api/products/${_id}`, {
       method: "DELETE",
     });
     const result = await res.json();
     if (result.status === "error") throw new Error(result.error);
-    else socket.emit("productList", result.products);
+    else socket.emit("updatedProducts", result.payload);
 
-    alert("Product removed successfully")
-
+    alert("Product removed successfully");
   } catch (error) {
     console.log(error);
   }
 };
 
-socket.on("updatedProducts", (products) => {
-
+socket.on("updatedProducts", (payload) => {
   tbody.innerHTML = "";
 
-  products.forEach((item) => {
+  payload.forEach((item) => {
     const row = document.createElement("tr");
     row.innerHTML = `
-        <td class="table-row">${item.title}</td>
-        <td class="table-row">${item.description}</td>
-        <td class="table-row">${item.price}</td>
-        <td class="table-row">${item.code}</td>
-        <td class="table-row">${item.category}</td>
-        <td class="table-row">${item.stock}</td>
-        <td class="table-row">
-          <button class="btn-delete" onclick="deleteProduct(${item.id})" id="btnDelete">Eliminar</button>
-        </td>
-      `;
+      <td class="table-row">${item.title}</td>
+      <td class="table-row">${item.description}</td>
+      <td class="table-row">${item.price}</td>
+      <td class="table-row">${item.code}</td>
+      <td class="table-row">${item.category}</td>
+      <td class="table-row">${item.stock}</td>
+      <td class="table-row">
+        <button class="btn-delete" onclick="deleteProduct(${item._id})" id="btnDelete">Eliminar</button>
+      </td>
+    `;
     tbody.appendChild(row);
-  });
-});
+  })
+})
