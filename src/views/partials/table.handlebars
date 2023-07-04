@@ -7,7 +7,7 @@
         <th class="table-row">Code</th>
         <th class="table-row">Category</th>
         <th class="table-row">Stock</th>
-        <th class="table-row">Delete</th>
+        <th class="table-row">Actions</th>
       </tr> 
     </thead>
     <tbody id="tbody">
@@ -20,7 +20,9 @@
           <td class="table-row">{{this.category}}</td>
           <td class="table-row">{{this.stock}}</td>
           <td class="table-row">
-            <button class="btn-delete" onclick="deleteProduct('{{this._id}}')" id="btnDelete">Eliminar</button>
+            <button class="btn-delete" onclick="deleteProduct('{{this._id}}')" id="btnDelete">Delete</button>
+            {{!-- <button class="btn btn-primary">Update</button>
+            <button class="btn btn-success">Add to cart</button> --}}
           </td class="table-row">
         </tr>
       {{/each}}

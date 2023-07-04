@@ -39,7 +39,17 @@ form.addEventListener("submit", async (e) => {
       } else {
         socket.emit("updatedProducts", result.payload);
 
-        alert("Product added successfully");
+        Toastify({
+          text: "Product added Successfully",
+          duration: 1500,
+          newWindow: true,
+          gravity: "bottom",
+          position: "right",
+          stopOnFocus: true,
+          backgroundColor: "linear-gradient(to right, #99c600, #026f3e)",
+          
+          onClick: function () {},
+        }).showToast();
 
         document.getElementById("title").value = "";
         document.getElementById("description").value = "";
@@ -63,7 +73,17 @@ const deleteProduct = async (_id) => {
     if (result.status === "error") throw new Error(result.error);
     else socket.emit("updatedProducts", result.payload);
 
-    alert("Product removed successfully");
+    Toastify({
+      text: "Product removed Successfully",
+      duration: 1500,
+      newWindow: true,
+      gravity: "bottom",
+      position: "right",
+      stopOnFocus: true,
+      backgroundColor: "linear-gradient(to right, #d14007, #820957)",
+      onClick: function () {},
+    }).showToast();
+
   } catch (error) {
     console.log(error);
   }
@@ -88,3 +108,5 @@ socket.on("updatedProducts", (payload) => {
     tbody.appendChild(row);
   })
 })
+
+

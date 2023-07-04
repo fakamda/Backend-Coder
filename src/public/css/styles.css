@@ -33,7 +33,7 @@ body{
 }
 
 .form-text{
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -167,3 +167,34 @@ table {
     background-color: #55555596;
 }
 
+.chat-container {
+    width: 600px;
+    background-color: #0000008a;
+    border-radius: 4px;
+}
+
+.chat-logs {
+    background-color: #1102021c;
+}
+
+.chat-input {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    width: 100%;
+    background-color: #f3f3f3;
+    border: none;
+    border-radius: 5px;
+}
+
+.chat-input:focus {
+    outline: none;
+    color: black;
+    font-weight: 400;
+    font-size: 20px;   
+}
+
+.gradient {
+    background: rgb(80,63,164);
+    background: linear-gradient(71deg, rgba(80,63,164,1) 12%, rgba(61,117,106,1) 50%, rgba(16,7,84,1) 97%);
+}
