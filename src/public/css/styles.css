@@ -117,7 +117,7 @@ input[type=number] { -moz-appearance:textfield; appearance: textfield; }
     background-color: rgb(31, 109, 61);
 }
 
-.btn-delete{
+/* .btn-delete{
     opacity: 1;
     align-self: center;
     height: 35px;
@@ -136,7 +136,7 @@ input[type=number] { -moz-appearance:textfield; appearance: textfield; }
 
 .btn-delete:active {
     background-color: rgb(145, 51, 51);
-}
+} */
 
 table {
     border-radius: 10px;

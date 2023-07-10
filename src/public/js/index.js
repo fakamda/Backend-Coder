@@ -102,7 +102,8 @@ socket.on("updatedProducts", (payload) => {
       <td class="table-row">${item.category}</td>
       <td class="table-row">${item.stock}</td>
       <td class="table-row">
-        <button class="btn-delete" onclick="deleteProduct(${item._id})" id="btnDelete">Eliminar</button>
+      <button class="btn btn-danger" onclick="deleteProduct('${item._id}')" id="btnDelete"><i class="fa-solid fa-trash"></button>
+      <button class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i></button>
       </td>
     `;
     tbody.appendChild(row);

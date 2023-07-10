@@ -1,132 +1,436 @@
 [
 	{
-		"id": 1,
-		"title": "Remera 1",
-		"description": "Remera amarilla buena onda",
-		"code": "10",
-		"price": 10000,
-		"status": true,
-		"stock": 10,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 2,
-		"title": "Remera 2",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11000,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 3,
-		"title": "Remera 3",
-		"description": "Remera negra buena onda",
-		"code": "12",
-		"price": 10000,
-		"status": true,
-		"stock": 30,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_negra"
-		]
-	},
-	{
-		"id": 4,
-		"title": "Remera 4",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11000,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 5,
-		"title": "Remera 5",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11100,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 6,
-		"title": "Remera 6",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11500,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 7,
-		"title": "Remera 7",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 12000,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 8,
-		"title": "Remera 8",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11100,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 9,
-		"title": "Remera 9",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 9000,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	},
-	{
-		"id": 10,
-		"title": "Remera 10",
-		"description": "Remera verde buena onda",
-		"code": "11",
-		"price": 11500,
-		"status": true,
-		"stock": 20,
-		"category": "remeras",
-		"thumbnails": [
-			"./public/assets/remera_verde"
-		]
-	}
+        "title": "Blue Shirt",
+        "description": "Stylish blue shirt for a casual look",
+        "code": "BLU001",
+        "price": 25000,
+        "status": true,
+        "stock": 10,
+        "category": "shirts",
+        "thumbnails": [
+            "./public/assets/blue_shirt.jpg"
+        ]
+    },
+    {
+        "title": "Red Hoodie",
+        "description": "Comfy red hoodie for a cozy feel",
+        "code": "RED002",
+        "price": 30000,
+        "status": true,
+        "stock": 15,
+        "category": "hoodies",
+        "thumbnails": [
+            "./public/assets/red_hoodie.jpg"
+        ]
+    },
+    {
+        "title": "Black Jeans",
+        "description": "Classic black jeans for a timeless look",
+        "code": "BLK003",
+        "price": 40000,
+        "status": true,
+        "stock": 20,
+        "category": "jeans",
+        "thumbnails": [
+            "./public/assets/black_jeans.jpg"
+        ]
+    },
+    {
+        "title": "White Dress",
+        "description": "Elegant white dress for special occasions",
+        "code": "WHT004",
+        "price": 60000,
+        "status": true,
+        "stock": 8,
+        "category": "dresses",
+        "thumbnails": [
+            "./public/assets/white_dress.jpg"
+        ]
+    },
+    {
+        "title": "Gray Sweater",
+        "description": "Cozy gray sweater for chilly days",
+        "code": "GRY005",
+        "price": 35000,
+        "status": true,
+        "stock": 12,
+        "category": "sweaters",
+        "thumbnails": [
+            "./public/assets/gray_sweater.jpg"
+        ]
+    },
+    {
+        "title": "Striped Polo",
+        "description": "Stylish striped polo shirt for a smart look",
+        "code": "STR006",
+        "price": 45000,
+        "status": true,
+        "stock": 15,
+        "category": "polos",
+        "thumbnails": [
+            "./public/assets/striped_polo.jpg"
+        ]
+    },
+    {
+        "title": "Printed Skirt",
+        "description": "Trendy printed skirt for a fashionable style",
+        "code": "PRT007",
+        "price": 35000,
+        "status": true,
+        "stock": 10,
+        "category": "skirts",
+        "thumbnails": [
+            "./public/assets/printed_skirt.jpg"
+        ]
+    },
+    {
+        "title": "Denim Jacket",
+        "description": "Classic denim jacket for a cool look",
+        "code": "DNM008",
+        "price": 55000,
+        "status": true,
+        "stock": 5,
+        "category": "jackets",
+        "thumbnails": [
+            "./public/assets/denim_jacket.jpg"
+        ]
+    },
+    {
+        "title": "Yellow Shorts",
+        "description": "Vibrant yellow shorts for a sunny day",
+        "code": "YEL009",
+        "price": 25000,
+        "status": true,
+        "stock": 20,
+        "category": "shorts",
+        "thumbnails": [
+            "./public/assets/yellow_shorts.jpg"
+        ]
+    },
+    {
+        "title": "Green T-Shirt",
+        "description": "Fresh green t-shirt for a casual style",
+        "code": "GRN010",
+        "price": 20000,
+        "status": true,
+        "stock": 25,
+        "category": "t-shirts",
+        "thumbnails": [
+            "./public/assets/green_tshirt.jpg"
+        ]
+    },
+    {
+        "title": "Purple Blouse",
+        "description": "Elegant purple blouse for a chic look",
+        "code": "PUR011",
+        "price": 45000,
+        "status": true,
+        "stock": 12,
+        "category": "blouses",
+        "thumbnails": [
+            "./public/assets/purple_blouse.jpg"
+        ]
+    },
+    {
+        "title": "Checked Shirt",
+        "description": "Trendy checked shirt for a stylish look",
+        "code": "CHK012",
+        "price": 38000,
+        "status": true,
+        "stock": 15,
+        "category": "shirts",
+        "thumbnails": [
+            "./public/assets/checked_shirt.jpg"
+        ]
+    },
+    {
+        "title": "Orange Cap",
+        "description": "Bright orange cap for a sporty vibe",
+        "code": "ORG013",
+        "price": 15000,
+        "status": true,
+        "stock": 18,
+        "category": "hats",
+        "thumbnails": [
+            "./public/assets/orange_cap.jpg"
+        ]
+    },
+    {
+        "title": "Printed Leggings",
+        "description": "Colorful printed leggings for a unique style",
+        "code": "PRT014",
+        "price": 30000,
+        "status": true,
+        "stock": 10,
+        "category": "leggings",
+        "thumbnails": [
+            "./public/assets/printed_leggings.jpg"
+        ]
+    },
+    {
+        "title": "Brown Boots",
+        "description": "Stylish brown boots for a trendy look",
+        "code": "BRN015",
+        "price": 70000,
+        "status": true,
+        "stock": 8,
+        "category": "boots",
+        "thumbnails": [
+            "./public/assets/brown_boots.jpg"
+        ]
+    },
+    {
+        "title": "Pink Dress",
+        "description": "Feminine pink dress for a romantic occasion",
+        "code": "PNK016",
+        "price": 60000,
+        "status": true,
+        "stock": 6,
+        "category": "dresses",
+        "thumbnails": [
+            "./public/assets/pink_dress.jpg"
+        ]
+    },
+    {
+        "title": "Black Pants",
+        "description": "Versatile black pants for a polished look",
+        "code": "BLK017",
+        "price": 40000,
+        "status": true,
+        "stock": 12,
+        "category": "pants",
+        "thumbnails": [
+            "./public/assets/black_pants.jpg"
+        ]
+    },
+    {
+        "title": "Printed T-Shirt",
+        "description": "Unique printed t-shirt for a creative style",
+        "code": "PRT018",
+        "price": 25000,
+        "status": true,
+        "stock": 15,
+        "category": "t-shirts",
+        "thumbnails": [
+            "./public/assets/printed_tshirt.jpg"
+        ]
+    },
+    {
+        "title": "Blue T-Shirt",
+        "description": "Cool blue t-shirt for a casual look",
+        "code": "BT001",
+        "price": 25000,
+        "status": true,
+        "stock": 10,
+        "category": "t-shirts",
+        "thumbnails": [
+            "./public/assets/blue_tshirt.jpg"
+        ]
+    },
+    {
+        "title": "Red Polo Shirt",
+        "description": "Stylish red polo shirt for a smart appearance",
+        "code": "RP002",
+        "price": 35000,
+        "status": true,
+        "stock": 20,
+        "category": "polo shirts",
+        "thumbnails": [
+            "./public/assets/red_polo.jpg"
+        ]
+    },
+    {
+        "title": "Black Hoodie",
+        "description": "Comfortable black hoodie for a cozy feel",
+        "code": "BH003",
+        "price": 45000,
+        "status": true,
+        "stock": 30,
+        "category": "hoodies",
+        "thumbnails": [
+            "./public/assets/black_hoodie.jpg"
+        ]
+    },
+    {
+        "title": "White Dress Shirt",
+        "description": "Elegant white dress shirt for formal occasions",
+        "code": "WDS004",
+        "price": 55000,
+        "status": true,
+        "stock": 40,
+        "category": "dress shirts",
+        "thumbnails": [
+            "./public/assets/white_dress_shirt.jpg"
+        ]
+    },
+    {
+        "title": "Gray Sweatpants",
+        "description": "Relaxed gray sweatpants for ultimate comfort",
+        "code": "GS005",
+        "price": 30000,
+        "status": true,
+        "stock": 50,
+        "category": "sweatpants",
+        "thumbnails": [
+            "./public/assets/gray_sweatpants.jpg"
+        ]
+    },
+    {
+        "title": "Striped Blouse",
+        "description": "Fashionable striped blouse for a trendy look",
+        "code": "SB006",
+        "price": 40000,
+        "status": true,
+        "stock": 60,
+        "category": "blouses",
+        "thumbnails": [
+            "./public/assets/striped_blouse.jpg"
+        ]
+    },
+    {
+        "title": "Printed Shorts",
+        "description": "Colorful printed shorts for a vibrant style",
+        "code": "PS007",
+        "price": 28000,
+        "status": true,
+        "stock": 70,
+        "category": "shorts",
+        "thumbnails": [
+            "./public/assets/printed_shorts.jpg"
+        ]
+    },
+    {
+        "title": "Denim Jacket",
+        "description": "Classic denim jacket for a timeless appeal",
+        "code": "DJ008",
+        "price": 60000,
+        "status": true,
+        "stock": 80,
+        "category": "jackets",
+        "thumbnails": [
+            "./public/assets/denim_jacket.jpg"
+        ]
+    },
+    {
+        "title": "Yellow Tank Top",
+        "description": "Bright yellow tank top for a sunny day",
+        "code": "YTT009",
+        "price": 20000,
+        "status": true,
+        "stock": 90,
+        "category": "tank tops",
+        "thumbnails": [
+            "./public/assets/yellow_tank_top.jpg"
+        ]
+    },
+    {
+        "title": "Green Skirt",
+        "description": "Chic green skirt for a feminine touch",
+        "code": "GS010",
+        "price": 38000,
+        "status": true,
+        "stock": 100,
+        "category": "skirts",
+        "thumbnails": [
+            "./public/assets/green_skirt.jpg"
+        ]
+    },
+    {
+        "title": "Purple Sweater",
+        "description": "Cozy purple sweater for chilly days",
+        "code": "PS011",
+        "price": 42000,
+        "status": true,
+        "stock": 110,
+        "category": "sweaters",
+        "thumbnails": [
+            "./public/assets/purple_sweater.jpg"
+        ]
+    },
+    {
+        "title": "Checked Shirt",
+        "description": "Trendy checked shirt for a stylish look",
+        "code": "CS012",
+        "price": 32000,
+        "status": true,
+        "stock": 120,
+        "category": "shirts",
+        "thumbnails": [
+            "./public/assets/checked_shirt.jpg"
+        ]
+    },
+    {
+        "title": "Orange Cap",
+        "description": "Vibrant orange cap for a sporty vibe",
+        "code": "OC013",
+        "price": 18000,
+        "status": true,
+        "stock": 130,
+        "category": "caps",
+        "thumbnails": [
+            "./public/assets/orange_cap.jpg"
+        ]
+    },
+    {
+        "title": "Printed Leggings",
+        "description": "Funky printed leggings for an eye-catching style",
+        "code": "PL014",
+        "price": 26000,
+        "status": true,
+        "stock": 140,
+        "category": "leggings",
+        "thumbnails": [
+            "./public/assets/printed_leggings.jpg"
+        ]
+    },
+    {
+        "title": "Brown Boots",
+        "description": "Stylish brown boots for a trendy look",
+        "code": "BB015",
+        "price": 70000,
+        "status": true,
+        "stock": 150,
+        "category": "boots",
+        "thumbnails": [
+            "./public/assets/brown_boots.jpg"
+        ]
+    },
+    {
+        "title": "Pink Dress",
+        "description": "Pretty pink dress for a special occasion",
+        "code": "PD016",
+        "price": 48000,
+        "status": true,
+        "stock": 160,
+        "category": "dresses",
+        "thumbnails": [
+            "./public/assets/pink_dress.jpg"
+        ]
+    },
+    {
+        "title": "Black Jeans",
+        "description": "Classic black jeans for a versatile look",
+        "code": "BJ017",
+        "price": 35000,
+        "status": true,
+        "stock": 170,
+        "category": "jeans",
+        "thumbnails": [
+            "./public/assets/black_jeans.jpg"
+        ]
+    },
+    {
+        "title": "Printed T-Shirt",
+        "description": "Unique printed t-shirt for a creative style",
+        "code": "PT018",
+        "price": 28000,
+        "status": true,
+        "stock": 180,
+        "category": "t-shirts",
+        "thumbnails": [
+            "./public/assets/printed_tshirt.jpg"
+        ]
+    }
 ]
+
+       

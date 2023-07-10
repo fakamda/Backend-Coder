@@ -1,42 +1,13 @@
 import { Router } from "express"
-import cartModel from "../models/cart.model.js";
-import productModel from "../models/product.model.js";
-// import CartManager from '../Dao/FsManager/cartManager.js';
+import cartModel from "../models/cart.model.js"
+import productModel from "../models/product.model.js"
 
 const router = Router()
-// const carts = new CartManager
-
-// router.get("/", async (req, res) => {
-//     res.send(await carts.readCarts())
-// })
-
-// router.get("/:cid", async (req, res) => {
-//     let id = parseInt(req.params.cid)
-//     res.send(await carts.getCartById(id))
-// })
-
-// router.post("/", async (req, res) => {
-//     res.send(await carts.addCarts())
-// })
-
-// router.post('/:cid/products/:pid', async (req, res) => {
-//     let cartId = parseInt(req.params.cid)
-//     let productId = parseInt(req.params.pid)
-
-//     res.send(await carts.addProductsToCart(cartId, productId))
-// })
-
-// router.delete("/:cid/products/:pid", async (req, res) => {
-//     let cartId = parseInt(req.params.cid)
-//     let productId = parseInt(req.params.pid)
-//     res.send(await carts.deleteProductFromCart(cartId, productId))
-
-// })
 
 router.post("/", async (req, res) => {
     try {
-      const cart = req.body;
-      const addCart = await cartModel.create(cart);
+      const cart = req.body
+      const addCart = await cartModel.create(cart)
       res.json({ status: "success", payload: addCart })
     } catch (error) {
       console.log(error);
@@ -91,5 +62,72 @@ router.post("/", async (req, res) => {
       return res.status(500).json({ error: error.message })
     }
   })
+
+router.delete("/:cid/products/:pid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
+    const cart = await cartModel.findById(cid);
+    if (!cart) {
+      return res.status(404).json({ status: "error", error: "Cart not found" });
+    }
+    cart.products = cart.products.filter(
+      (item) => item.product.toString() !== pid
+    );
+    const result = await cart.save();
+    res.json({ status: "success", payload: result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: "error", error: error.message });
+  }
+});
+
+router.put("/:cid", async (req, res) => {
+  try {
+    const cid = req.params.cid;
+    const updatedProducts = req.body.products;
+    const cart = await cartModel.findById(cid);
+    if (!cart) {
+      return res.status(404).json({ status: "error", error: "Cart not found" });
+    }
+    cart.products = updatedProducts;
+    const result = await cart.save();
+    res.json({ status: "success", payload: result });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: "error", error: error.message });
+  }
+});
+
+// router.put("/:cid/products/:pid", async (req, res) => {
+//   try{
+//   "status": "success",
+//   "payload": {
+//     "_id": "cartId",
+//     "products": [
+//       {
+//         "_id": "productId1",
+//         "product": {
+//           "_id": "productId1",
+//           "name": "Product 1",
+//           "price": 10.99
+//         },
+//         "quantity": 5
+//       },
+//       {
+//         "_id": "productId2",
+//         "product": {
+//           "_id": "productId2",
+//           "name": "Product 2",
+//           "price": 20.99
+//         },
+//         "quantity": 3
+//       }
+//     ]
+//   }
+// }
+
+
+  
   
   export default router

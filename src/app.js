@@ -58,6 +58,7 @@ try {
     await messageModel.create(data)
     io.emit("logs", messages)
   })
+  
 })
 
 } catch(err) {
