@@ -1,1 +1,25 @@
-<h1>Hola</h1>
+<h1>Cart Details</h1>
+    {{#if cart}}
+    <h2>Cart ID: {{_id}}</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each cart.products}}
+            <tr>
+                <td>{{this.product}}</td>
+                <td>{{this.quantity}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    <p>Cart not found.</p>
+    {{/if}}
+
+    <script src="/js/cart.js"></script>
+<a href="/remove/{{this.item.id}}" class="btn btn-default"></i> Remove</a>

@@ -8,6 +8,16 @@ const cartManager = new CartManager();
 
 const router = Router()
 
+router.get("/", async (req, res) => {
+  try {
+    const carts = await cartManager.getCarts()
+    res.status(200).json({status: "success", payload: carts});
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: "error", error: error.message });
+  }
+})
+
 
 router.get("/:cid", async (req, res) => {
   try {

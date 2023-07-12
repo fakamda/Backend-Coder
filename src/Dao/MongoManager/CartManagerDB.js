@@ -47,6 +47,16 @@ class CartManager {
     }
   }
 
+  async getCarts() {
+    try {
+      const cart = await cartModel.find().lean().exec()
+      return cart
+    } catch (error) {
+      console.log(error)
+      throw new Error(error.message)
+    }
+  }
+
   async getCartById(cartId) {
     try {
       const cart = await cartModel.findById(cartId);
