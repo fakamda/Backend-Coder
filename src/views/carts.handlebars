@@ -1,25 +1,34 @@
-<h1>Cart Details</h1>
-    {{#if cart}}
-    <h2>Cart ID: {{_id}}</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Product ID</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each cart.products}}
-            <tr>
-                <td>{{this.product}}</td>
-                <td>{{this.quantity}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
+{{!-- <div>
+    {{cid}}
+</div>
+<div>
+    <ul>
+        {{#each products}}
+        <li>{{this.product}} - {{this.quantity}}</li>
+        {{/each}}
+    </ul>
+</div> --}}
+     <table class="table-container">
+      <thead class="table-title">
+        <tr>
+          <th class="table-row">Product</th>
+          {{!-- <th class="table-row">Price</th> --}}
+          <th class="table-row">Quantity</th>
+          <th class="table-row">Action</th>
+        </tr>
+      </thead class="table-row">
+      <tbody>
+        {{#each products}}
+          <tr>  
+            <td class="table-row">{{this.product}}</td>
+            {{!-- <td class="table-row">{{this.price}}</td> --}}
+            <td class="table-row">{{this.quantity}}</td>
+            <td class="table-row">
+              <button class="btn btn-danger" onclick="deleteProductInCart('{{this._id}}')" id="btnDeleteProductInCart"><i class="fa-sharp fa-solid fa-trash"></i></button>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
     </table>
-    {{else}}
-    <p>Cart not found.</p>
-    {{/if}}
 
     <script src="/js/cart.js"></script>
-<a href="/remove/{{this.item.id}}" class="btn btn-default"></i> Remove</a>
