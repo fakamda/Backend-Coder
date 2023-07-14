@@ -3,7 +3,7 @@ import productModel from "../models/product.model.js";
 import messageModel from "../models/chat.model.js";
 // import ProductManager from "../Dao/MongoManager/ProductManagerDB.js";
 import cartModel from "../models/cart.model.js";
-import { getProductsFromCart } from "./carts.routes.js";
+// import { getProductsFromCart } from "./carts.routes.js";
 // import CartManager from "../Dao/MongoManager/CartManagerDB.js";
 
 // const productManager = new ProductManager()
@@ -152,26 +152,28 @@ router.get("/chat", async (req, res) => {
   }
 })
 
-// router.get('/carts/:cid', async (req, res) => {
-//   try {
-//     const cid = req.params.cid
-//       // const result = await cartManager.getCartById(cid)
-//       const result = await cartModel.findById(cid).lean().exec()
-//       // const carts = cart.products
-//       res.render('carts', { cid: result._id, products: result.products }) // Renderiza la plantilla "cart.hbs" y pasa los datos del carrito
-//   } catch (error) {
-//       console.error(error);
-//       res.status(404).send('Carrito no encontrado');
-//   }
-// })
-
-router.get('/carts/:/cid', async (req, res) => {
-  const result = await getProductsFromCart(req, res)
-  if (result.statusCode === 200) {
-    res.render('carts', { cart: result.response.payload })
-  } else {
-    res.status(result.statusCode).json({ status: 'error', error: result.response.error })
+router.get('/carts/:cid', async (req, res) => {
+  try {
+    const cid = req.params.cid
+      // const result = await cartManager.getCartById(cid)
+      const result = await cartModel.findById(cid).populate('products.product').lean().exec()
+      console.log(result)
+      // const carts = cart.products
+      res.render('carts', { cid: result._id, products: result.products })
+      // console.log(result.products) // Renderiza la plantilla "cart.hbs" y pasa los datos del carrito
+  } catch (error) {
+      console.error(error);
+      res.status(404).send('Carrito no encontrado');
   }
 })
+
+// router.get('/carts/:/cid', async (req, res) => {
+//   const result = await getProductsFromCart(req, res)
+//   if (result.statusCode === 200) {
+//     res.render('carts', { cart: result.response.payload })
+//   } else {
+//     res.status(result.statusCode).json({ status: 'error', error: result.response.error })
+//   }
+// })
 
 export default router
