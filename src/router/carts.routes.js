@@ -8,15 +8,38 @@ const cartManager = new CartManager();
 
 const router = Router()
 
-router.get("/", async (req, res) => {
-  try {
-    const carts = await cartManager.getCarts()
-    res.status(200).json({status: "success", payload: carts});
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ status: "error", error: error.message });
+export const getProductsFromCart = async (req, res) => {
+  try{
+    const id = req.params.cid
+    const result = await cartModel.findById(id).populate('products.product').lean()
+    if (result === null) {
+      return {
+        statusCode: 404,
+        response: { status: 'error', error: 'Not Found' }
+      }
+    }
+    return {
+      statusCode: 200,
+      response: { status: 'success', payload: result }
+    }
+  } catch(err) {
+    return {
+      statusCode: 500,
+      response: { status: 'success', error: err.message  }
+    }
   }
-})
+  }
+  
+
+// router.get("/", async (req, res) => {
+//   try {
+//     const carts = await cartManager.getCarts()
+//     res.status(200).json({status: "success", payload: carts});
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ status: "error", error: error.message });
+//   }
+// })
 
 
 router.get("/:cid", async (req, res) => {

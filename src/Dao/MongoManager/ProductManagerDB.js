@@ -24,7 +24,7 @@ class ProductManager {
         limit,
         sort: { price: sort === "desc" ? -1 : 1 },
         lean: true,
-      };
+      }
 
       const result = await productModel.paginate(filter, options)
 
@@ -120,6 +120,6 @@ class ProductManager {
     }
 
   }
-  
+
 }
   export default ProductManager
