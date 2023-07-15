@@ -21,7 +21,7 @@
         {{/each}}
       </tbody>
     </table> --}}
-<h2>Products From cart with id = {{cart._id}}</h2>
+<h2 class="h2-title">Products From cart with id = {{this.cid}}</h2>
 
       <table class="table-container">
         <thead class="table-title">
@@ -32,9 +32,10 @@
             <td class="table-row">Code</td>
             <td class="table-row">Stock</td>
             <td class="table-row">Quantity</td>
+            <td class="table-row">Action</td>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="tbody">
           {{#each products}}
           <tr>
             <td class="table-row">{{this.product.title}}</td>
@@ -43,9 +44,14 @@
             <td class="table-row">{{this.product.code}}</td>
             <td class="table-row">{{this.product.stock}}</td>
             <td class="table-row">{{this.quantity}}</td>
+            <td class="table-row">
+              <button class="btn btn-danger" onclick="removeProductFromCart('{{this.product._id}}')"><i class="fa-sharp fa-solid fa-trash"></i></button>
+            </td>
           </tr>
           {{/each}}
         </tbody>
       </table>
-
+      
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/js/cart.js"></script>

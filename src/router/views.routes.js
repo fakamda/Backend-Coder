@@ -157,7 +157,6 @@ router.get('/carts/:cid', async (req, res) => {
     const cid = req.params.cid
       // const result = await cartManager.getCartById(cid)
       const result = await cartModel.findById(cid).populate('products.product').lean().exec()
-      console.log(result)
       // const carts = cart.products
       res.render('carts', { cid: result._id, products: result.products })
       // console.log(result.products) // Renderiza la plantilla "cart.hbs" y pasa los datos del carrito
@@ -166,14 +165,5 @@ router.get('/carts/:cid', async (req, res) => {
       res.status(404).send('Carrito no encontrado');
   }
 })
-
-// router.get('/carts/:/cid', async (req, res) => {
-//   const result = await getProductsFromCart(req, res)
-//   if (result.statusCode === 200) {
-//     res.render('carts', { cart: result.response.payload })
-//   } else {
-//     res.status(result.statusCode).json({ status: 'error', error: result.response.error })
-//   }
-// })
 
 export default router

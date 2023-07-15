@@ -80,7 +80,7 @@ const deleteProduct = async (_id) => {
       gravity: "bottom",
       position: "right",
       stopOnFocus: true,
-      backgroundColor: "linear-gradient(to right, #d14007, #820957)",
+      style: { background: "linear-gradient(to right, #d14007, #820957)"},
       onClick: function () {},
     }).showToast();
 
@@ -89,26 +89,26 @@ const deleteProduct = async (_id) => {
   }
 }
 
-function addProductToCart(cid, pid) {
-  fetch(`/api/carts/${cid}/product/${pid}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId: pid }),
-  })
-    .then(response => response.json())
-    .then(data => {
-      // Maneja la respuesta del servidor
-      console.log('Producto agregado al carrito:', data);
-      // Realiza acciones adicionales según sea necesario
-    })
-    .catch(error => {
-      // Maneja errores de la solicitud
-      console.error('Error al agregar el producto al carrito:', error);
-      // Puedes mostrar un mensaje de error al usuario o realizar acciones adicionales según tu caso
-    });
-}
+// function addProductToCart(cid, pid) {
+//   fetch(`/api/carts/${cid}/product/${pid}`, {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({ productId: pid }),
+//   })
+//     .then(response => response.json())
+//     .then(data => {
+//       // Maneja la respuesta del servidor
+//       console.log('Producto agregado al carrito:', data);
+//       // Realiza acciones adicionales según sea necesario
+//     })
+//     .catch(error => {
+//       // Maneja errores de la solicitud
+//       console.error('Error al agregar el producto al carrito:', error);
+//       // Puedes mostrar un mensaje de error al usuario o realizar acciones adicionales según tu caso
+//     });
+// }
 
 
 socket.on("updatedProducts", (payload) => {
@@ -124,8 +124,8 @@ socket.on("updatedProducts", (payload) => {
       <td class="table-row">${item.category}</td>
       <td class="table-row">${item.stock}</td>
       <td class="table-row">
-      <button class="btn btn-danger" onclick="deleteProduct('${item._id}')" id="btnDelete"><i class="fa-sharp fa-solid fa-trash"></i></button>
-      <button class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i></button>
+        <button class="btn btn-danger" onclick="deleteProduct('${item._id}')" id="btnDelete"><i class="fa-sharp fa-solid fa-trash"></i></button>
+        <button class="btn btn-success"><i class="fa-solid fa-cart-shopping"></i></button>
       </td>
     `;
     tbody.appendChild(row);
