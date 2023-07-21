@@ -63,24 +63,3 @@ function addProductToCart(pid) {
     }
 
   }
-
-  // socket.on("updatedProducts", (payload) => {
-  //   const tbody = document.getElementById("tbody");
-  //   tbody.innerHTML = "";
-  
-  //   payload.forEach((item) => {
-  //     const row = document.createElement("tr");
-  //     row.innerHTML = `
-  //       <td class="table-row">${item.product.title}</td>
-  //       <td class="table-row">${item.product.description}</td>
-  //       <td class="table-row">${item.product.price}</td>
-  //       <td class="table-row">${item.product.code}</td>
-  //       <td class="table-row">${item.product.stock}</td>
-  //       <td class="table-row">${item.quantity}</td>
-  //       <td class="table-row">
-  //         <button class="btn btn-danger" onclick="removeProductFromCart('${item.product._id}')"><i class="fa-sharp fa-solid fa-trash"></i></button>
-  //       </td>
-  //     `;
-  //     tbody.appendChild(row);
-  //   });
-  // });

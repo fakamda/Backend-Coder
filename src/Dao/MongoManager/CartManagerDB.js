@@ -104,6 +104,7 @@ class CartManager {
       throw new Error(error.message);
     }
   }
+  
 }
 
 export default CartManager

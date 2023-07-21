@@ -7,12 +7,24 @@ import CartRouter from './router/carts.routes.js'
 import messageModel from './models/chat.model.js'
 import mongoose from 'mongoose'
 
+import session from "express-session";
+import cookieParser from "cookie-parser";
+import authRouter from "./router/sessions.routes.js"; 
+
 const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.b5lk3ud.mongodb.net/'
 // const MONGO_URI = 'mongodb://localhost:27017/'
 const MONGO_DB_NAME = 'ecommerce'
 
 const app = express()
 app.use(express.json())
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "TuSecretoSuperSecreto", // Cambia esto por una cadena secreta para firmar las cookies
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 const PORT = 8080
 
@@ -42,6 +54,7 @@ try {
     app.use("/api/products", ProductRouter)
     app.use("/api/carts", CartRouter)
     app.use("/products", viewsRouter)
+    app.use("/", authRouter);
 
     io.on("connection", async socket => {
     console.log("Successful Connection")
