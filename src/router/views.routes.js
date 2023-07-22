@@ -1,14 +1,8 @@
 import { Router } from "express";
 import productModel from "../models/product.model.js";
 import messageModel from "../models/chat.model.js";
-// import ProductManager from "../Dao/MongoManager/ProductManagerDB.js";
+import UserModel from '../models/user.model.js'
 import cartModel from "../models/cart.model.js";
-// import { getProductsFromCart } from "./carts.routes.js";
-// import CartManager from "../Dao/MongoManager/CartManagerDB.js";
-
-// const productManager = new ProductManager()
-
-// const cartManager = new CartManager()
 
 const router = Router()
 
@@ -18,6 +12,7 @@ router.get("/", async (req, res) => {
     const page = parseInt(req.query.page) || 1
     const sort = req.query.sort === "desc" ? -1 : 1
     const query = req.query.query || {};
+
 
     const filter = {};
 
@@ -36,6 +31,8 @@ router.get("/", async (req, res) => {
       lean: true,
     };
 
+    const user = req.session.user
+    console.log(user)
     const result = await productModel.paginate(filter, options)
 
     const totalCount = result.totalDocs;
@@ -62,6 +59,7 @@ router.get("/", async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
+      user
     })
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
