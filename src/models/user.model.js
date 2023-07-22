@@ -17,6 +17,10 @@ userSchema.methods.encryptPassword = async password => {
   return await bcrypt.hash(password, salt)
 }
 
+ userSchema.methods.isValidPassword = async function(password){
+  return await bcrypt.compare(password, this.password)
+}
+
 mongoose.set("strictQuery", false);
 
 const UserModel = mongoose.model(userCollection, userSchema)

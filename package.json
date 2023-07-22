@@ -35,6 +35,7 @@
     "mongoose-paginate-v2": "^1.7.1",
     "npm": "^9.8.0",
     "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "socket.io": "^4.6.2"
   }
 }

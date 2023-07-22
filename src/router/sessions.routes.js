@@ -1,6 +1,7 @@
 // // authRouter.js
 import express from "express";
 import UserModel from "../models/user.model.js"; // Asegúrate de tener la ruta correcta al UserModel
+import passport from "passport";
 
 const router = express.Router()
 
@@ -48,12 +49,20 @@ router.post('/register', async (req, res) => {
 
 })
 
-router.post('/login', async (req, res) => {
-  res.send('login')
+router.post('/login', passport.authenticate('login', { failureRedirect: '/session/login'}), async (req, res) => {
+  const { email } = req.body;
+  const user = await UserModel.findOne({ email: email });
+  req.session.user = user
+  res.redirect('/products')
 })
 
-router.get('/logout', async (req, res) => {
-  res.send('logout')
+router.get('/logout', (req, res) => {
+  req.session.destroy(err => {
+      if(err) {
+          console.log(err);
+          res.status(500).render('errors/base', {error: err})
+      } else res.redirect('/sessions/login')
+  })
 })
 
 // render de register form

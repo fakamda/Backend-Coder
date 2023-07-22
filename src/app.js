@@ -6,8 +6,10 @@ import ProductRouter from './router/product.routes.js'
 import CartRouter from './router/carts.routes.js'
 import messageModel from './models/chat.model.js'
 import mongoose from 'mongoose'
+import passport from 'passport'
+import initializePassport from './config/passport.js'
 
-// import session from "express-session";
+import session from "express-session";
 // import cookieParser from "cookie-parser";
 import sessionsRouter from './router/sessions.routes.js'
 
@@ -21,13 +23,16 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 // app.use(cookieParser());
-// app.use(
-//   session({
-//     secret: "TuSecretoSuperSecreto", // Cambia esto por una cadena secreta para firmar las cookies
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// )
+app.use(
+  session({
+    secret: "Secret", // Cambia esto por una cadena secreta para firmar las cookies
+    resave: false,
+    saveUninitialized: true,
+  })
+)
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 const PORT = 8080
 
