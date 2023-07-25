@@ -1,6 +1,4 @@
 import { Router } from "express"
-// import cartModel from "../models/cart.model.js"
-// import productModel from "../models/product.model.js"
 import CartManager from '../Dao/MongoManager/CartManagerDB.js'
 
 
@@ -46,9 +44,9 @@ router.get("/:cid", async (req, res) => {
   try {
     const cartId = req.params.cid;
     const cart = await cartManager.getCartById(cartId);
-    res.send(cart);
+    res.send(cart)
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return res.status(500).json({ status: "error", error: error.message });
   }
 })

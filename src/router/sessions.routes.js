@@ -1,6 +1,5 @@
-// // authRouter.js
 import express from "express";
-import UserModel from "../models/user.model.js"; // Asegúrate de tener la ruta correcta al UserModel
+import UserModel from "../models/user.model.js" 
 import passport from "passport";
 
 const router = express.Router()
@@ -61,7 +60,7 @@ router.get('/logout', (req, res) => {
       if(err) {
           console.log(err);
           res.status(500).render('errors/base', {error: err})
-      } else res.redirect('/sessions/login')
+      } else res.redirect('/session/login')
   })
 })
 

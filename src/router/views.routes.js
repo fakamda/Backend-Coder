@@ -31,8 +31,8 @@ router.get("/", async (req, res) => {
       lean: true,
     };
 
-    const user = req.session.user
-    console.log(user)
+    const user = req.session.user // detectamos el user en la session
+
     const result = await productModel.paginate(filter, options)
 
     const totalCount = result.totalDocs;

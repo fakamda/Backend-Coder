@@ -13,8 +13,13 @@
             <a class="btn btn-secondary" href="/products/carts/64b0e821ad6550a00434e7af"><i class="fa-solid fa-cart-shopping"></i></a>
         </div>
         <div>
-            <a class="nav-item mt-2 text-white text-decoration-none m-4" href="/session/login">Login</a>
-            <a class="nav-item mt-2 text-white text-decoration-none" href="/session/register">Register</a>
+            {{#if user}}
+            <a class="nav-item mt-2 text-white text-decoration-none" href="/session/logout">Log out</a>
+              {{else}}
+            <a class="nav-item mt-2 text-white text-decoration-none m-4" href="/session/login">Log in</a>
+            <a class="nav-item mt-2 text-white text-decoration-none" href="/session/register">Sign up</a>
+            {{/if}}
+            
         </div>
     </div>
  </nav>

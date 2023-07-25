@@ -8,6 +8,7 @@ import messageModel from './models/chat.model.js'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
+import MongoStore from 'connect-mongo'
 
 import session from "express-session";
 // import cookieParser from "cookie-parser";
@@ -25,6 +26,11 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(cookieParser());
 app.use(
   session({
+    store: MongoStore.create({
+      mongoUrl: MONGO_URI,
+      dbName: MONGO_DB_NAME,
+      mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
+    }),
     secret: "Secret", // Cambia esto por una cadena secreta para firmar las cookies
     resave: false,
     saveUninitialized: true,
