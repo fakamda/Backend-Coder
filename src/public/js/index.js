@@ -37,6 +37,7 @@ form.addEventListener("submit", async (e) => {
       if (result.status === "error") {
         throw new Error(results.error);
       } else {
+        
         socket.emit("updatedProducts", result.payload);
 
         Toastify({

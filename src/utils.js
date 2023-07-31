@@ -1,15 +1,3 @@
-// import {fileURLToPath} from 'url'
-// import { dirname } from 'path'
-// import bcrypt from 'bcrypt'
-// const __filename = fileURLToPath(import.meta.url)
-// const __dirname = dirname(__filename)
 
-// export default __dirname
-
-// export const createHash = password => {
-//     return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-// }
-
-// export const isValidPassword = (user, password) => {
-//     return bcrypt.compareSync(password, user.password)
-// }
+export const MONGODB_URI = process.env.MONGODB_URI 
+export const MONGO_DB_NAME = process.env.MONGO_DB_NAME

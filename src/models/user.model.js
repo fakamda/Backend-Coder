@@ -18,7 +18,7 @@ userSchema.methods.encryptPassword = async password => {
 }
 
  userSchema.methods.isValidPassword = async function(password){
-  return await bcrypt.compare(password, this.password)
+  return await bcrypt.compareSync(password, this.password)
 }
 
 mongoose.set("strictQuery", false);

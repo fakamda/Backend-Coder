@@ -1,5 +1,6 @@
 import passport  from 'passport'
 import local from 'passport-local'
+
 import UserModel, {} from '../models/user.model.js'
 
 
