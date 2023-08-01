@@ -11,13 +11,23 @@
         and shop with ease. Join us and discover a new era in the world of Ecommerce.
     </p>
 </div>
-<div class="text-center landing-page-background">
+{{#if user}}
+    <div>
+        <div class="text-center landing-page-background">
+            <p class="text-white mb-2">Hi, {{user.first_name}}!</p>
+            <p class="text-white mb-4">Thanks for loggin in, Now discover our products</p>
+            <a href="/products" class="btn btn-primary">See Our Products</a>
+        </div>
+    </div>
+    {{else}}
+    <div class="text-center landing-page-background">
     <h2 class="text-white mb-2">Login or Register:</h2>
     <p class="text-white mb-4">Please log in to your account or register to start shopping.</p>
-
+    
     <div>
         <a href="/session/login" class="btn btn-success">Log in</a>
         <a href="session/register" class="btn btn-primary">Sign up</a>
     </div>
+{{/if}}
 </div>
 

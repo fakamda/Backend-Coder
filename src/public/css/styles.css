@@ -221,3 +221,8 @@ table {
     height: 200px;
     background-color: #22222281;
 }
+
+.gh-logo {
+  font-size: 24px; 
+  margin-left: 6px;
+}

@@ -6,6 +6,7 @@ import cartModel from "../models/cart.model.js";
 
 const router = Router()
 
+
 router.get("/", async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 10
@@ -105,6 +106,8 @@ try {
 
   const result = await productModel.paginate(filter, options);
 
+  const user = req.session.user
+
   const totalCount = result.totalDocs;
   const totalPages = result.totalPages;
   const hasNextPage = page < totalPages;
@@ -134,6 +137,7 @@ try {
     hasNextPage,
     prevLink,
     nextLink,
+    user
   });
 } catch (err) {
   res.status(500).json({ status: "error", error: err.message });
@@ -142,8 +146,9 @@ try {
 
 router.get("/chat", async (req, res) => {
   try {
+    const user = req.session.user
     const messages = await messageModel.find().lean().exec();
-    res.render("chat", { messages });
+    res.render("chat", { user, messages });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: error });
@@ -153,11 +158,9 @@ router.get("/chat", async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
   try {
     const cid = req.params.cid
-      // const result = await cartManager.getCartById(cid)
-      const result = await cartModel.findById(cid).populate('products.product').lean().exec()
-      // const carts = cart.products
-      res.render('carts', { cid: result._id, products: result.products })
-      // console.log(result.products) // Renderiza la plantilla "cart.hbs" y pasa los datos del carrito
+    const user = req.session.user
+    const result = await cartModel.findById(cid).populate('products.product').lean().exec()
+    res.render('carts', { cid: result._id, products: result.products, user })
   } catch (error) {
       console.error(error);
       res.status(404).send('Carrito no encontrado');

@@ -9,21 +9,20 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 import MongoStore from 'connect-mongo'
+import { MONGO_URI, MONGO_DB_NAME, COOKIE_SECRET_PASS, PORT } from './utils.js'
 
 import session from "express-session";
 // import cookieParser from "cookie-parser";
 import sessionsRouter from './router/sessions.routes.js'
 
-const MONGO_URI = 'mongodb+srv://coder:coder@cluster0.b5lk3ud.mongodb.net/'
-// const MONGO_URI = 'mongodb://localhost:27017/'
-const MONGO_DB_NAME = 'ecommerce'
+
 
 const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// app.use(cookieParser());
+// app.use(cookieParser(COOKIE_SECRET_PASS))
 app.use(
   session({
     store: MongoStore.create({
@@ -36,11 +35,11 @@ app.use(
     saveUninitialized: true,
   })
 )
+
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
-const PORT = 8080
 
 const serverHttp = app.listen(PORT, () =>
   console.log(`Listening on port ${PORT}`)
@@ -63,13 +62,19 @@ try {
    })
    console.log('Db Connected')
 
-   app.get("/", (req, res) => res.render("index", {name:"Facundo"}))
+   app.get("/", (req, res) => {
+    const user = req.session.user
+    res.render("index", { name:"Facundo", user })
+   })
+    
+   
 
     app.use("/api/products", ProductRouter)
     app.use("/api/carts", CartRouter)
     app.use("/products", viewsRouter)
 
     app.use("/session", sessionsRouter)
+    // app.use('/jwt', JWTRouter)
 
     io.on("connection", async socket => {
     console.log("Successful Connection")

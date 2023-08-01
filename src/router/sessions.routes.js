@@ -4,49 +4,55 @@ import passport from "passport";
 
 const router = express.Router()
 
-router.post('/register', async (req, res) => {
+// router.post('/register', async (req, res) => {
 
-  const errors = []
+//   const errors = []
 
-  const {first_name, last_name, age, email, password} = req.body
+//   const {first_name, last_name, age, email, password} = req.body
 
-  if(password.length < 4) {
-    errors.push({text: 'Password must be at least 4 characters'})
-  }
+//   if(password.length < 4) {
+//     errors.push({text: 'Password must be at least 4 characters'})
+//   }
 
-  const existUser = await UserModel.findOne({ email })
-    if(existUser) {
-     errors.push({ text: 'The user already exist.'})
-    //  return res.status(409).json({ error: "El usuario ya existe" });
-      // res.redirect('/register')
-    }
-  if (errors.length > 0) {
-    res.render('sessions/register', {
-      errors, 
-        first_name,
-        last_name,
-        age,
-        email
-    })
-  } else {
+//   const existUser = await UserModel.findOne({ email })
+//     if(existUser) {
+//      errors.push({ text: 'The user already exist.'})
+//     //  return res.status(409).json({ error: "El usuario ya existe" });
+//       // res.redirect('/register')
+//     }
+//   if (errors.length > 0) {
+//     res.render('sessions/register', {
+//       errors, 
+//         first_name,
+//         last_name,
+//         age,
+//         email
+//     })
+//   } else {
 
-//  Crear un nuevo usuario
-    const newUser = new UserModel({
-      first_name,
-      last_name,
-      email,
-      age,
-      password,
-      role: "usuario",
-    })
-      newUser.password = await newUser.encryptPassword(password)
-      await newUser.save()
-      res.redirect('login')
+// //  Crear un nuevo usuario
+//     const newUser = new UserModel({
+//       first_name,
+//       last_name,
+//       email,
+//       age,
+//       password,
+//       role: "usuario",
+//     })
+//       newUser.password = await newUser.encryptPassword(password)
+//       await newUser.save()
+//       res.redirect('login')
       
-  }
+//   }
 
 
-})
+// })
+
+router.post('/register', passport.authenticate('register', {
+  successRedirect: '/session/login',   // La URL a la que redireccionar si el registro es exitoso
+  failureRedirect: '/session/register',    // La URL a la que redireccionar si hay errores en el registro
+  failureFlash: true               // Habilitar mensajes flash para mostrar los errores (si los hay)
+}))
 
 router.post('/login', passport.authenticate('login', { failureRedirect: '/session/login'}), async (req, res) => {
   const { email } = req.body;
@@ -63,6 +69,21 @@ router.get('/logout', (req, res) => {
       } else res.redirect('/session/login')
   })
 })
+
+router.get('/github',
+    passport.authenticate('github', { scope: ['user:email']}),
+    async(req, res) => {}
+)
+
+router.get('/githubcallback', 
+    passport.authenticate('github', {failureRedirect: '/session/login'}),
+    async(req, res) => {
+        console.log('Callback: ', req.user)
+        req.session.user = req.user
+        console.log('User session: ', req.session.user)
+        res.redirect('/')
+    }
+)
 
 // render de register form
 router.get("/register", (req, res) => {

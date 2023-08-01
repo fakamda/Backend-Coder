@@ -5,20 +5,20 @@ const userCollection = "users";
 
 const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
-  last_name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  age: { type: Number, required: true },
+  last_name: { type: String },
+  email: { type: String, unique: true },
+  age: { type: Number },
   password: { type: String, required: true },
   role: String 
 });
 
 userSchema.methods.encryptPassword = async password => {
-  const salt = await bcrypt.genSalt(10)
-  return await bcrypt.hash(password, salt)
+  const salt = bcrypt.genSaltSync(10)
+  return bcrypt.hashSync(password, salt)
 }
 
  userSchema.methods.isValidPassword = async function(password){
-  return await bcrypt.compareSync(password, this.password)
+  return bcrypt.compareSync(password, this.password)
 }
 
 mongoose.set("strictQuery", false);
