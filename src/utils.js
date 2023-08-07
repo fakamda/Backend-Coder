@@ -13,13 +13,15 @@ export const COOKIE_SECRET_PASS = process.env.COOKIE_SECRET_PASS
 export const PRIVATE_KEY = process.env.PRIVATE_KEY
 export const SIGNED_COOKIE_KEY = process.env.SIGNED_COOKIE_KEY
 export const PORT = process.env.PORT
+export const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY
+export const JWT_COOKIE_NAME = process.env.JWT_COOKIE_NAME
 
 
 
-export const generateToken = user => {
-    const token = jwt.sign({ user }, PRIVATE_KEY , { expiresIn: '24h' })
-    return token
-}
+// export const generateToken = user => {
+//     const token = jwt.sign({ user }, PRIVATE_KEY , { expiresIn: '24h' })
+//     return token
+// }
 
 export const authToken = (req, res, next) => {
     let token = req.headers.auth
@@ -40,4 +42,49 @@ export const createHash = (password) => {
   
 export const isValidPassword = (user, password) => {
     bcrypt.compareSync(password, user.password)
+}
+
+// export const createHash = password => {
+//     return bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+// }
+
+// export const isValidPassword = (user, password) => {
+//     return bcrypt.compareSync(password, user.password)
+// }
+
+export const generateToken = user => {
+    const token = jwt.sign({ user }, JWT_PRIVATE_KEY, { expiresIn: '24h' })
+    return token
+}
+
+export const extractCookie = req => {
+    return (req && req.cookies) ? req.cookies[JWT_COOKIE_NAME] : null
+}
+
+//  MIDDLEWARE DEBERIA IR EN CARPETA MIDDLEWARE
+
+
+export const passportCAll = strategy => {
+    return async(req, res, next) => {
+        passport.authenticate(strategy, function(err, user, info) {
+            if(err) return next(err)
+            if(!user) return res.status(401).render('errors/base', { error: info.messages ? info.messages : info.toString })
+            
+            req.user = user
+            next()
+        }) (req, res, next)
+    }
+}
+
+
+export const handlePolicies = policies => (req, res, next) => {
+    const user = req.user.user || null 
+    if(policies.includes('admin')) {
+        if(!user.role === 'admin') {
+            return res.status(403).render('errors/base', {
+                error: 'Need to be an ADMIN'
+            })
+        }
+    }
+    return next
 }
