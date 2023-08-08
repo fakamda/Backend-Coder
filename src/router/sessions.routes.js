@@ -16,9 +16,9 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/sessio
   // const user = await UserModel.findOne({ email: email });
   // req.session.user = user
   // res.redirect('/products')
-  // if (!req.user) {
-  //   res.status(400).send({ status: "error", error: "invalid credentials" })
-  // }
+  if (!req.user) {
+    res.status(400).send({ status: "error", error: "invalid credentials" })
+  }
   res.cookie(JWT_COOKIE_NAME, req.user.token).redirect('/products')
 })
 

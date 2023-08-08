@@ -4,10 +4,11 @@ import messageModel from "../models/chat.model.js";
 import UserModel from '../models/user.model.js'
 import cartModel from "../models/cart.model.js";
 
+
 const router = Router()
 
 
-router.get("/", async (req, res) => {
+router.get("/",  async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 10
     const page = parseInt(req.query.page) || 1
@@ -32,14 +33,14 @@ router.get("/", async (req, res) => {
       lean: true,
     };
 
-    // const user = req.session.user // detectamos el user en la session
-
-    const user = req.user
-
-    console.log(user)
-
-
     const result = await productModel.paginate(filter, options)
+
+    const user = {
+      first_name : req.user.first_name,
+      last_name : req.user.last_name,
+      email : req.user.email,
+      role : req.user.role
+    }
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;

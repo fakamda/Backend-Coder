@@ -64,10 +64,13 @@ const initializePassport = () => {
         } else {
        
          const match = await user.isValidPassword(password)
+     
+         const token = generateToken(user)
+         
+         user.token = token
+         
 
          if (match) {
-            const token = generateToken(user)
-            user.token = token
             return done(null, user)
          }else {
             return done(null, false, { message: 'Incorrect Password' })
@@ -79,7 +82,7 @@ const initializePassport = () => {
         clientID: CLIENT_ID,
         clientSecret: CLIENT_SECRET,
         callbackURL: 'http://localhost:8080/session/githubcallback'
-    }, async(accessToken, refreshToken, profile, done) => {
+    }, async(accesToken, refreshToken, profile, done) => {
 
         try {
             const user = await UserModel.findOne({ email: profile._json.email })
@@ -87,10 +90,10 @@ const initializePassport = () => {
             const newUser = await UserModel.create({
                 first_name: profile._json.name,
                 email: profile._json.email,
-                password,
+                password: " " ,
                 role: "user"
             })
-            newUser.password = await newUser.encryptPassword(password);
+            // newUser.password = await newUser.encryptPassword(password);
             return done(null, newUser)
         } catch(err) {
             return done(`Error to login with GitHub => ${err.message}`)
