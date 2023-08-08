@@ -4,7 +4,6 @@ import GitHubStrategy from 'passport-github2'
 import { CLIENT_SECRET, CLIENT_ID } from '../utils.js'
 import { JWT_PRIVATE_KEY, createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import passport_jwt from 'passport-jwt'
-
 import UserModel, {} from '../models/user.model.js'
 
 const JWTStrategy = passport_jwt.Strategy
@@ -59,14 +58,16 @@ const initializePassport = () => {
         passwordField: 'password'
     } , async (email, password, done) => {
 
-        // confirmar si existe el correo en la base de datos.
         const user = await UserModel.findOne({ email })
         if (!user) {
             return done(null, false, { message: 'User not found' })
         } else {
-            //confirmar si la contraseña coincide
+       
          const match = await user.isValidPassword(password)
+
          if (match) {
+            const token = generateToken(user)
+            user.token = token
             return done(null, user)
          }else {
             return done(null, false, { message: 'Incorrect Password' })
@@ -79,7 +80,7 @@ const initializePassport = () => {
         clientSecret: CLIENT_SECRET,
         callbackURL: 'http://localhost:8080/session/githubcallback'
     }, async(accessToken, refreshToken, profile, done) => {
-        // console.log(profile)
+
         try {
             const user = await UserModel.findOne({ email: profile._json.email })
             if (user) return done(null, user)
@@ -104,10 +105,11 @@ const initializePassport = () => {
         done(null, jwt_payload)
     }))
 
+
     passport.serializeUser((user, done) => {
         done(null, user._id)
     })
-
+    
     passport.deserializeUser(async (id, done) => {
         const user = await UserModel.findById(id)
         done(null, user)
@@ -116,13 +118,13 @@ const initializePassport = () => {
 
 } 
 
-passport.serializeUser((user, done) => {
-    done(null, user._id)
-})
+// passport.serializeUser((user, done) => {
+//     done(null, user._id)
+// })
 
-passport.deserializeUser(async (id, done) => {
-    const user = await UserModel.findById(id)
-    done(null, user)
-})
+// passport.deserializeUser(async (id, done) => {
+//     const user = await UserModel.findById(id)
+//     done(null, user)
+// })
 
 export default initializePassport

@@ -9,8 +9,7 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
 // import MongoStore from 'connect-mongo'
-import { MONGO_URI, MONGO_DB_NAME, COOKIE_SECRET_PASS, PORT } from './utils.js'
-
+import { MONGO_URI, MONGO_DB_NAME, PORT, passportCall, SESSION_SECRET_KEY } from './utils.js'
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import sessionsRouter from './router/sessions.routes.js'
@@ -26,12 +25,7 @@ app.use(express.urlencoded({ extended: true }))
 // app.use(cookieParser(COOKIE_SECRET_PASS))
 app.use(
   session({
-    // store: MongoStore.create({
-    //   mongoUrl: MONGO_URI,
-    //   dbName: MONGO_DB_NAME,
-    //   mongoOptions: { useNewUrlParser: true, useUnifiedTopology: true },
-    // }),
-    secret: "Secret", // Cambia esto por una cadena secreta para firmar las cookies
+    secret: SESSION_SECRET_KEY, // Cambia esto por una cadena secreta para firmar las cookies
     resave: false,
     saveUninitialized: true,
   })

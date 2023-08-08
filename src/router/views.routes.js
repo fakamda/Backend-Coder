@@ -32,7 +32,12 @@ router.get("/", async (req, res) => {
       lean: true,
     };
 
-    const user = req.session.user // detectamos el user en la session
+    // const user = req.session.user // detectamos el user en la session
+
+    const user = req.user
+
+    console.log(user)
+
 
     const result = await productModel.paginate(filter, options)
 
@@ -106,7 +111,7 @@ try {
 
   const result = await productModel.paginate(filter, options);
 
-  const user = req.session.user
+  const user = req.user.user
 
   const totalCount = result.totalDocs;
   const totalPages = result.totalPages;
@@ -146,7 +151,7 @@ try {
 
 router.get("/chat", async (req, res) => {
   try {
-    const user = req.session.user
+    const user = req.user.user
     const messages = await messageModel.find().lean().exec();
     res.render("chat", { user, messages });
   } catch (error) {
@@ -158,7 +163,7 @@ router.get("/chat", async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
   try {
     const cid = req.params.cid
-    const user = req.session.user
+    const user = req.user.user
     const result = await cartModel.findById(cid).populate('products.product').lean().exec()
     res.render('carts', { cid: result._id, products: result.products, user })
   } catch (error) {
