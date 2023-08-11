@@ -32,8 +32,7 @@ function addProductToCart(pid) {
 
   const removeProductFromCart = async (pid) => {
     try{
-    const cid = '64b0e821ad6550a00434e7af' 
-    
+      
      await fetch(`/api/carts/${cid}/products/${pid}`, {
       method: 'DELETE',
       headers: {

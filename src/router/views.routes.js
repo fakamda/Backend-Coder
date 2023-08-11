@@ -39,8 +39,11 @@ router.get("/",  async (req, res) => {
       first_name : req.user.first_name,
       last_name : req.user.last_name,
       email : req.user.email,
-      role : req.user.role
+      role : req.user.role,
+      cart: req.user.cart
     }
+
+
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -73,20 +76,6 @@ router.get("/",  async (req, res) => {
   }
 })
 
-// router.get("/realtimeproducts", async (req, res) => {
-//   try {
-//     const products = await productModel.find().lean().exec();
-//     const payload = products.map(product => ({
-//       ...product,
-//       showDeleteButton: true
-//     }));
-//     res.render('realTimeProducts', { status: "success", payload: payload });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ status: 'error', error: error.message })
-//   }
-// })
-
 router.get("/realtimeproducts", async (req, res) => {
 try {
   const limit = parseInt(req.query.limit) || 10;
@@ -112,7 +101,12 @@ try {
 
   const result = await productModel.paginate(filter, options);
 
-  const user = req.user.user
+  const user = {
+    first_name : req.user.first_name,
+    last_name : req.user.last_name,
+    email : req.user.email,
+    role : req.user.role
+  }
 
   const totalCount = result.totalDocs;
   const totalPages = result.totalPages;
@@ -152,7 +146,12 @@ try {
 
 router.get("/chat", async (req, res) => {
   try {
-    const user = req.user.user
+    const user = {
+      first_name : req.user.first_name,
+      last_name : req.user.last_name,
+      email : req.user.email,
+      role : req.user.role
+    }
     const messages = await messageModel.find().lean().exec();
     res.render("chat", { user, messages });
   } catch (error) {
@@ -164,7 +163,15 @@ router.get("/chat", async (req, res) => {
 router.get('/carts/:cid', async (req, res) => {
   try {
     const cid = req.params.cid
-    const user = req.user.user
+
+    const user = {
+      first_name : req.user.first_name,
+      last_name : req.user.last_name,
+      email : req.user.email,
+      role : req.user.role,
+      cart: req.user.cart
+    }
+
     const result = await cartModel.findById(cid).populate('products.product').lean().exec()
     res.render('carts', { cid: result._id, products: result.products, user })
   } catch (error) {

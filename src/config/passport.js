@@ -5,6 +5,7 @@ import { CLIENT_SECRET, CLIENT_ID } from '../utils.js'
 import { JWT_PRIVATE_KEY, createHash, extractCookie, generateToken, isValidPassword } from '../utils.js'
 import passport_jwt from 'passport-jwt'
 import UserModel, {} from '../models/user.model.js'
+import cartModel from '../models/cart.model.js'
 
 const JWTStrategy = passport_jwt.Strategy
 const ExtractJWT = passport_jwt.ExtractJwt
@@ -32,11 +33,13 @@ const initializePassport = () => {
         if (existUser) {
             errors.push({ text: 'The user already exists.' });
         }
+
+       
     
         if (errors.length > 0) {
             return done(null, false, { errors });
         } else {
-    
+            const cartForNewUser = await cartModel.create({})
             // Create a new user
             const newUser = new UserModel({
                 first_name,
@@ -44,7 +47,7 @@ const initializePassport = () => {
                 email,
                 age,
                 password,
-                role: "user",
+                cart:  cartForNewUser._id
             });
             newUser.password = await newUser.encryptPassword(password);
             await newUser.save();

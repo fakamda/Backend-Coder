@@ -78,9 +78,6 @@ class ProductManager {
   static async createProduct(product) {
     try {
       const result = await productModel.create(product)
-      // const products = await productModel.find().lean().exec()
-      // Emit the event using the appropriate socketio instance
-      // req.app.get("socketio").emit("updatedProducts", products)
       return { status: "success", payload: result }
     } catch (err) {
       throw new Error(err.message)
@@ -111,9 +108,6 @@ class ProductManager {
       if (result === null) {
         throw new Error("Not Found")
       }
-      // const products = await productModel.find().lean().exec()
-      // // Emit the event using the appropriate socketio instance
-      // req.app.get("socketio").emit("updatedProducts", products)
       return { status: "success", payload: products }
     } catch (err) {
       throw new Error(err.message)

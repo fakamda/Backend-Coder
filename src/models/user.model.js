@@ -7,9 +7,10 @@ const userSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   last_name: { type: String },
   email: { type: String, unique: true },
+  cart: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
   age: { type: Number },
   password: { type: String, required: true },
-  role: String 
+  role: { type: String, default: "user" }
 });
 
 userSchema.methods.encryptPassword = async password => {
