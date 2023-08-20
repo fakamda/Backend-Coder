@@ -1,9 +1,8 @@
-// const socket = io()
 
 
 function addProductToCart(pid) {
-  const cid = '64b0e821ad6550a00434e7af' // usando un solo cart
-  fetch(`/api/carts/${cid}/product/${pid}`, {
+  // const cid = req.user.cart
+  fetch(`/api/carts/cid/product/${pid}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
