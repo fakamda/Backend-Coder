@@ -4,69 +4,69 @@ import productModel from "../models/product.model.js"
 
 
 export const getProductsWithLimit =  async (req, res) => {
-    try {
-      const limit = parseInt(req.query.limit) || 10
-      const page = parseInt(req.query.page) || 1
-      const sort = req.query.sort === "desc" ? -1 : 1
-      const query = req.query.query || {};
-  
-      const filter = {};
-  
-      if (query.category) {
-        filter.category = query.category;
-      }
-  
-      if (query.availability) {
-        filter.availability = query.availability;
-      }
-  
-      const options = {
-        page,
-        limit,
-        sort: { price: sort },
-        lean: true,
-      };
-  
-      const result = await productModel.paginate(filter, options)
-  
-      const user = {
-        first_name : req.user.first_name,
-        last_name : req.user.last_name,
-        email : req.user.email,
-        role : req.user.role,
-        cart: req.user.cart
-      }
-  
-      const totalCount = result.totalDocs;
-      const totalPages = result.totalPages;
-      const hasNextPage = page < totalPages;
-      const hasPrevPage = page > 1;
-      const nextPage = hasNextPage ? page + 1 : null;
-      const prevPage = hasPrevPage ? page - 1 : null;
-      const prevLink = hasPrevPage
-        ? `http://localhost:8080/products?page=${prevPage}&limit=${limit}`
-        : null;
-      const nextLink = hasNextPage
-        ? `http://localhost:8080/products?page=${nextPage}&limit=${limit}`
-        : null;
-  
-      res.status(200).render( "home", {
-        status: "success",
-        payload: result.docs,
-        totalPages,
-        prevPage,
-        nextPage,
-        page,
-        hasPrevPage,
-        hasNextPage,
-        prevLink,
-        nextLink,
-        user
-      })
-    } catch (err) {
-      res.status(500).json({ status: "error", error: err.message });
+  try {
+    const limit = parseInt(req.query.limit) || 10
+    const page = parseInt(req.query.page) || 1
+    const sort = req.query.sort === "desc" ? -1 : 1
+    const query = req.query.query || {};
+
+    const filter = {};
+
+    if (query.category) {
+      filter.category = query.category;
     }
+
+    if (query.availability) {
+      filter.availability = query.availability;
+    }
+
+    const options = {
+      page,
+      limit,
+      sort: { price: sort },
+      lean: true,
+    };
+
+    const result = await productModel.paginate(filter, options)
+
+    const user = {
+      first_name : req.user.first_name,
+      last_name : req.user.last_name,
+      email : req.user.email,
+      role : req.user.role,
+      cart: req.user.cart
+    }
+
+    const totalCount = result.totalDocs;
+    const totalPages = result.totalPages;
+    const hasNextPage = page < totalPages;
+    const hasPrevPage = page > 1;
+    const nextPage = hasNextPage ? page + 1 : null;
+    const prevPage = hasPrevPage ? page - 1 : null;
+    const prevLink = hasPrevPage
+      ? `http://localhost:8080/products?page=${prevPage}&limit=${limit}`
+      : null;
+    const nextLink = hasNextPage
+      ? `http://localhost:8080/products?page=${nextPage}&limit=${limit}`
+      : null;
+
+    res.status(200).json({
+      status: "success",
+      payload: result.docs,
+      totalPages,
+      prevPage,
+      nextPage,
+      page,
+      hasPrevPage,
+      hasNextPage,
+      prevLink,
+      nextLink,
+      user
+    })
+  } catch (err) {
+    res.status(500).json({ status: "error", error: err.message });
   }
+}
 
 
 export const getProductsController = async (req, res) => {

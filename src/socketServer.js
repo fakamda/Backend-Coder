@@ -3,7 +3,6 @@ import messageModel from './models/chat.model.js'
 
 export const socketServerConnection = () => {
     io.on("connection", async socket => {
-        console.log("Successful Connection")
         socket.on("productList", data => {
         io.emit("updatedProducts", data)
       })

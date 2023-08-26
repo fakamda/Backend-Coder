@@ -12,4 +12,4 @@ export const SIGNED_COOKIE_KEY = process.env.SIGNED_COOKIE_KEY
 export const PORT = process.env.PORT
 export const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY
 export const JWT_COOKIE_NAME = process.env.JWT_COOKIE_NAME
-
+export const PERSISTENCE = process.env.PERSISTENCE
