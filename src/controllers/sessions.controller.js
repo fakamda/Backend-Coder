@@ -1,10 +1,4 @@
-import express from "express";
-// import passport from "passport";
-import { JWT_COOKIE_NAME } from "../utils.js";
-
-const router = express.Router()
-
-// router.post('/register', passport.authenticate('register', { successRedirect: '/session/login',  failureRedirect: '/session/register', failureFlash: true }))
+import { JWT_COOKIE_NAME } from "../config/config.js";
 
 export const userLoginController = async (req, res) => {
   if (!req.user) {
@@ -18,7 +12,6 @@ export const userLogoutController = (req, res) => {
 }
 
 export const githubPassportController = async(req, res) => {}
-
 
 export const githubLoginController = async(req, res) => {
         console.log('Callback: ', req.user)
@@ -36,6 +29,3 @@ export const registerViewController = (req, res) => {
 export const loginViewController = (req, res) => {
   res.render("sessions/login");
 }
-
-
-export default router;

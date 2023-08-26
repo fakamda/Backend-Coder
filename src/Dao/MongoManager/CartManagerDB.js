@@ -15,7 +15,7 @@ class CartManager {
 
   async addProductToCart(cartId, productId) {
     try {
-    const product = await ProductManager.getProductById(productId);
+      const product = await ProductManager.getProductById(productId);
         if (!product) {
         throw new Error("Product not found");
         }
@@ -79,7 +79,7 @@ class CartManager {
 
       cart.products = cart.products.filter(
         (item) => item.product.toString() !== productId
-      );
+      )
 
       const result = await cart.save();
       return result;

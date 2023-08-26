@@ -4,17 +4,15 @@ import { Server } from 'socket.io'
 import viewsRouter from './router/views.routes.js'
 import ProductRouter from './router/product.routes.js'
 import CartRouter from './router/carts.routes.js'
-import messageModel from './models/chat.model.js'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
-// import MongoStore from 'connect-mongo'
-import { MONGO_URI, MONGO_DB_NAME, PORT, passportCall, SESSION_SECRET_KEY } from './utils.js'
+import { PORT, SESSION_SECRET_KEY } from './config/config.js'
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import sessionsRouter from './router/sessions.routes.js'
-
-
+import MongoConnection from './database.js'
+import { socketServerConnection } from './socketServer.js'
 
 const app = express()
 
@@ -22,7 +20,7 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 
-// app.use(cookieParser(COOKIE_SECRET_PASS))
+
 app.use(
   session({
     secret: SESSION_SECRET_KEY, // Cambia esto por una cadena secreta para firmar las cookies
@@ -39,7 +37,7 @@ app.use(passport.session())
 const serverHttp = app.listen(PORT, () =>
   console.log(`Listening on port ${PORT}`)
 )
-const io = new Server(serverHttp)
+export const io = new Server(serverHttp)
 
 app.set("socketio", io)
 
@@ -51,43 +49,19 @@ app.set("view engine", "handlebars")
 mongoose.set('strictQuery', false)
 
 try {
-   await mongoose.connect(MONGO_URI, {
-    dbName: MONGO_DB_NAME,
-    useUnifiedTopology: true
-   })
-   console.log('Db Connected')
+  await MongoConnection.getInstance()
 
    app.get("/", (req, res) => {
     const user = req.session.user
     res.render("index", { name:"Facundo", user })
    })
-    
-   
 
-    app.use("/api/products", ProductRouter)
-    app.use("/api/carts", CartRouter)
-    app.use("/products", viewsRouter)
+    app.use("/api/products", ProductRouter);
+    app.use("/api/carts", CartRouter);
+    app.use("/products", viewsRouter);
+    app.use("/session", sessionsRouter);
 
-    app.use("/session", sessionsRouter)
-    // app.use('/jwt', JWTRouter)
-
-    io.on("connection", async socket => {
-    console.log("Successful Connection")
-    socket.on("productList", data => {
-    io.emit("updatedProducts", data)
-  })
-
-  let messages = await messageModel.find()
-
-  socket.broadcast.emit("alert");
-  socket.emit("logs", messages);
-  socket.on("message", async (data) => {
-    messages.push(data);
-    await messageModel.create(data)
-    io.emit("logs", messages)
-  })
-  
-})
+    socketServerConnection()
 
 } catch(err) {
     console.log(err.message)

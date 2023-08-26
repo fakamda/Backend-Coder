@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import passport from "passport";
 import { githubLoginController, githubPassportController, loginViewController, registerViewController, userLoginController, userLogoutController } from "../controllers/sessions.controller.js";
 
-const router = express.Router()
+const router = Router()
 
 router.post('/register', passport.authenticate('register', { successRedirect: '/session/login', failureRedirect: '/session/register', failureFlash: true }))
 router.post('/login', passport.authenticate('login', { failureRedirect: '/session/login'}), userLoginController)
