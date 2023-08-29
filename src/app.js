@@ -52,7 +52,6 @@ try {
   await MongoConnection.getInstance()
 
    app.get("/", (req, res) => {
-    const user = req.session.user
     res.render("index", { name:"Facundo", user })
    })
 

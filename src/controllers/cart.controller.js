@@ -47,7 +47,7 @@ export const addProductToCartController = async (req, res) => {
       throw new Error("Product not found");
     }
 
-    const cart = await cartModel.findById(cid)
+    const cart = await cartModel.findById(cid) //find by id
     if (!cart) {
       throw new Error("Cart not found")
     }
@@ -74,36 +74,12 @@ export const addProductToCartController = async (req, res) => {
   }
 }
 
-// export const addProductToCartController = async (req, res) => {
-//     const cartID = req.params.cid
-//     const productID = req.params.pid
-//     const quantity= req.body.quantity || 1
-//     const cart = await cartModel.findById(cartID)
-  
-//     let found = false
-//     for (let i = 0; i < cart.products.length; i++) {
-//         if (cart.products[i].id == productID) {
-//             cart.products[i].quantity++
-//             found = true
-//             break
-//         }
-//     }
-//     if (found == false) {
-//         cart.products.push({ id: productID, quantity})
-//     }
-  
-//     await cart.save()
-  
-  
-//     res.json({status: "Success", cart})
-//   }
-
 export const removeProductFromCartController = async (req, res) => {
   try {
     const cid = req.user.cart
     const pid = req.params.pid
     
-    const cart = await cartModel.findById(cid);
+    const cart = await cartModel.findById(cid); // find by id
     if (!cart) {
       throw new Error("Cart not found");
     }
@@ -127,7 +103,7 @@ export const updateCartController = async (req, res) => {
     const cid = req.user.cart
     const updatedProducts = req.body.products;
 
-    const cart = await cartModel.findById(cid);
+    const cart = await cartModel.findById(cid); // find by id
     if (!cart) {
       throw new Error("Cart not found");
     }
@@ -147,14 +123,14 @@ export const updateProductFromCartController = async (req, res) => {
     const cid = req.user.cart
     const pid = req.params.pid;
 
-    const cart = await cartModel.findById(cid);
+    const cart = await cartModel.findById(cid); //find by id
     if (!cart) {
       return res.status(404).json({ status: "error", error: "Cart not found" });
     }
 
     const updatedProduct = req.body.product;
 
-    const product = await productModel.findById(pid);
+    const product = await productModel.findById(pid); // PRODUCT FIND BY ID
     if (!product) {
       return res.status(404).json({ status: "error", error: "Product not found" });
     }
