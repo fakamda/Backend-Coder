@@ -118,10 +118,11 @@ const initializePassport = () => {
     
     passport.deserializeUser(async (id, done) => {
         const user = await UserModel.findById(id)
-        done(null, user)
+        done(null, user) 
     })
 
 
-} 
+}
+
 
 export default initializePassport

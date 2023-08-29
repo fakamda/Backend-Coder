@@ -1,7 +1,6 @@
 
 
 function addProductToCart(pid) {
-  // const cid = req.user.cart
   fetch(`/api/carts/cid/product/${pid}`, {
     method: 'POST',
     headers: {
@@ -10,7 +9,6 @@ function addProductToCart(pid) {
   })
     .then(response => response.json())
     .then(data => {
-
       Toastify({
         text: `The product ${pid} was added successfully `,
         duration: 1500,
@@ -32,7 +30,7 @@ function addProductToCart(pid) {
   const removeProductFromCart = async (pid) => {
     try{
       
-     await fetch(`/api/carts/${cid}/products/${pid}`, {
+     await fetch(`/api/carts/cid/products/${pid}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

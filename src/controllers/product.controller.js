@@ -1,4 +1,3 @@
-import ProductManager from "../Dao/MongoManager/ProductManagerDB.js"
 import productModel from "../models/product.model.js"
 
 
@@ -27,7 +26,7 @@ export const getProductsWithLimit =  async (req, res) => {
       lean: true,
     };
 
-    const result = await productModel.paginate(filter, options)
+    const result = await productModel.paginate(filter, options) // paginate
 
     const user = {
       first_name : req.user.first_name,
@@ -71,12 +70,11 @@ export const getProductsWithLimit =  async (req, res) => {
 
 export const getProductsController = async (req, res) => {
   try {
-    const limit = req.query.limit || 0
-    const productManager = new ProductManager()
-    const products = await productManager.getProducts()
-    res.status(200).json({products})
+    // const productManager = new ProductManager()
+    const products = await productModel.find().lean().exec()// await getall
+    res.status(200).json({ status: "success", payload: products })
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    res.status(500).json({ status: "error", error: err.message })
   }
 }
 
@@ -84,8 +82,8 @@ export const getProductsController = async (req, res) => {
 export const getProductByIdController = async (req, res) => {
   try {
     const productId = req.params.pid;
-    const result = await ProductManager.getProductById(productId)
-    res.status(200).json(result)
+    const result = await productModel.findById(productId).lean().exec(); // getbyid
+    res.status(200).json({status: "success", payload: result})
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message })
   }
@@ -95,7 +93,7 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const product = req.body;
-    const result = await ProductManager.createProduct(product)
+    const result = await productModel.create(product)
     const products = await productModel.find().lean().exec()
     req.app.get("socketio").emit("updatedProducts", products)
     res.status(200).json({status: "success", payload: result})
@@ -109,7 +107,10 @@ export const updateProductController = async (req, res) => {
   try {
     const productId = req.params.pid
     const data = req.body
-    const result = await ProductManager.updateProduct(productId, data)
+    const result = await productModel.findByIdAndUpdate(productId, data, { new: true }).lean().exec()
+    if (result === null) {
+      throw new Error("Not Found");
+    }
     const products = await productModel.find().lean().exec()
     req.app.get("socketio").emit("updatedProducts", products)
     res.status(200).json({status: "success", payload: result})
@@ -123,11 +124,7 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
     try {
       const productId = req.params.pid;
-
-      const result = await productModel
-        .findByIdAndDelete(productId)
-        .lean()
-        .exec();
+      const result = await productModel.findByIdAndDelete(productId).lean().exec()
 
       if (result === null) {
         return res.status(404).json({ error: 'Not Found' });
