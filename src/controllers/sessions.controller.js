@@ -29,3 +29,17 @@ export const registerViewController = (req, res) => {
 export const loginViewController = (req, res) => {
   res.render("sessions/login");
 }
+
+export const currentViewController = (req, res) => {
+  
+  // const user = {
+  //   first_name: req.user.first_name,
+  //   last_name: req.user.last_name,
+  //   email: req.user.email,
+  //   cart: req.user.cart
+  // }
+
+  const user = req.user
+  console.log(user)
+  res.render("sessions/current" , user)
+}

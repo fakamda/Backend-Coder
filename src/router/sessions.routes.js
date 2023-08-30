@@ -1,6 +1,6 @@
 import { Router } from "express";
 import passport from "passport";
-import { githubLoginController, githubPassportController, loginViewController, registerViewController, userLoginController, userLogoutController } from "../controllers/sessions.controller.js";
+import { currentViewController, githubLoginController, githubPassportController, loginViewController, registerViewController, userLoginController, userLogoutController } from "../controllers/sessions.controller.js";
 
 const router = Router()
 
@@ -9,7 +9,8 @@ router.post('/login', passport.authenticate('login', { failureRedirect: '/sessio
 router.get('/logout', userLogoutController)
 router.get('/github', passport.authenticate('github', { scope: ['user:email']}), githubPassportController)
 router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/session/login'}), githubLoginController)
-router.get("/register", registerViewController)
-router.get("/login", loginViewController)
+router.get('/register', registerViewController)
+router.get('/login', loginViewController)
+router.get('/current', currentViewController)
 
 export default router
