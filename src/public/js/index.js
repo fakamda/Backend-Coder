@@ -69,7 +69,7 @@ const deleteProduct = async (_id) => {
   try {
     const res = await fetch(`/api/products/${_id}`, {
       method: "DELETE",
-    });
+    })
     const result = await res.json()
     if (result.status === "error") throw new Error(result.error)
     else socket.emit("updatedProducts", result.payload)

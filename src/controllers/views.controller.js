@@ -116,22 +116,24 @@ export const chatViewController = async (req, res) => {
 
 export const cartViewController = async (req, res) => {
   try {
-    const cid = req.params.cid;
+    const cid = req.params.cid
 
-    const user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      role: req.user.role,
-      cart: req.user.cart,
-    };
+    // console.log(cid)
+
+    // const user = {
+    //   first_name: req.user.first_name,
+    //   last_name: req.user.last_name,
+    //   email: req.user.email,
+    //   role: req.user.role,
+    //   cart: req.user.cart,
+    // };
 
     const result = await cartModel
       .findById(cid)
       .populate("products.product")
       .lean()
       .exec();
-    res.render("carts", { cid: result._id, products: result.products, user });
+    res.render("carts", { cid: result._id, products: result.products });
   } catch (error) {
     console.error(error);
     res.status(404).send("Carrito no encontrado");

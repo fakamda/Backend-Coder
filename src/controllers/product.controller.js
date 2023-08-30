@@ -1,4 +1,5 @@
 import productModel from "../models/product.model.js"
+import { ProductService } from '../services/index.js'
 
 
 
@@ -26,15 +27,17 @@ export const getProductsWithLimit =  async (req, res) => {
       lean: true,
     };
 
-    const result = await productModel.paginate(filter, options) // paginate
+    // const result = await productModel.paginate(filter, options) // paginate
+    const result = await ProductService.getFilter(filter, options)
+    
 
-    const user = {
-      first_name : req.user.first_name,
-      last_name : req.user.last_name,
-      email : req.user.email,
-      role : req.user.role,
-      cart: req.user.cart
-    }
+    // const user = {
+    //   first_name : req.user.first_name,
+    //   last_name : req.user.last_name,
+    //   email : req.user.email,
+    //   role : req.user.role,
+    //   cart: req.user.cart
+    // }
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -60,7 +63,7 @@ export const getProductsWithLimit =  async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
-      user
+      // user
     })
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
@@ -71,7 +74,8 @@ export const getProductsWithLimit =  async (req, res) => {
 export const getProductsController = async (req, res) => {
   try {
     // const productManager = new ProductManager()
-    const products = await productModel.find().lean().exec()// await getall
+    // const products = await productModel.find().lean().exec()// await getall
+    const products = await ProductService.getAll()
     res.status(200).json({ status: "success", payload: products })
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message })
@@ -81,8 +85,9 @@ export const getProductsController = async (req, res) => {
 
 export const getProductByIdController = async (req, res) => {
   try {
-    const productId = req.params.pid;
-    const result = await productModel.findById(productId).lean().exec(); // getbyid
+    const productId = req.params.pid
+    // const result = await productModel.findById(productId).lean().exec(); // getbyid
+    const result = await ProductService.getById(productId)
     res.status(200).json({status: "success", payload: result})
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message })
@@ -93,8 +98,10 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const product = req.body;
-    const result = await productModel.create(product)
-    const products = await productModel.find().lean().exec()
+    // const result = await productModel.create(product)
+    // const products = await productModel.find().lean().exec()
+    const result = await ProductService.create(product)
+    const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)
     res.status(200).json({status: "success", payload: result})
   } catch (err) {
@@ -107,11 +114,13 @@ export const updateProductController = async (req, res) => {
   try {
     const productId = req.params.pid
     const data = req.body
-    const result = await productModel.findByIdAndUpdate(productId, data, { new: true }).lean().exec()
+    // const result = await productModel.findByIdAndUpdate(productId, data, { new: true }).lean().exec()
+    const result = await ProductService.update(productId, data)
     if (result === null) {
       throw new Error("Not Found");
     }
-    const products = await productModel.find().lean().exec()
+    // const products = await productModel.find().lean().exec()
+    const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)
     res.status(200).json({status: "success", payload: result})
   } catch (err) {
@@ -123,14 +132,16 @@ export const updateProductController = async (req, res) => {
 
 export const deleteProductController = async (req, res) => {
     try {
-      const productId = req.params.pid;
-      const result = await productModel.findByIdAndDelete(productId).lean().exec()
+      const productId = req.params.pid
+      // const result = await productModel.findByIdAndDelete(productId).lean().exec()
+      const result = await ProductService.delete(productId)
 
       if (result === null) {
         return res.status(404).json({ error: 'Not Found' });
       }
 
-      const products = await productModel.find().lean().exec();
+      // const products = await productModel.find().lean().exec();
+      const products = await ProductService.getAll()
       req.app.get("socketio").emit("updatedProducts", products);
 
       res.status(200).json({ status: "success", payload: products });
