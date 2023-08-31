@@ -26,15 +26,9 @@ export const productsViewController = async (req, res) => {
       lean: true,
     };
 
-    const result = await productModel.paginate(filter, options);
+    const result = await productModel.paginate(filter, options)
 
-    const user = {
-      // first_name: req.user.first_name,
-      // last_name: req.user.last_name,
-      // email: req.user.email,
-      // role: req.user.role,
-      cart: req.user.cart,
-    };
+    // const user = req.user
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -60,7 +54,7 @@ export const productsViewController = async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
-      user,
+      // user,
     });
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
@@ -92,12 +86,8 @@ export const realTimeProductsViewController = async (req, res) => {
 
     const result = await productModel.paginate(filter, options);
 
-    const user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      role: req.user.role,
-    };
+    const user = req.user
+
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -128,7 +118,7 @@ export const realTimeProductsViewController = async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
-      user,
+      user
     });
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
@@ -138,12 +128,8 @@ export const realTimeProductsViewController = async (req, res) => {
 
 export const chatViewController = async (req, res) => {
   try {
-    const user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      role: req.user.role,
-    };
+    const user = req.user
+
     const messages = await messageModel.find().lean().exec();
     res.render("chat", { user, messages });
   } catch (error) {
@@ -155,7 +141,7 @@ export const chatViewController = async (req, res) => {
 export const cartViewController = async (req, res) => {
   try {
     const cid = req.params.cid
-    
+
     const result = await cartModel.findById(cid).populate("products.product").lean().exec();
     res.render("carts", { cid: result._id, products: result.products });
   } catch (error) {

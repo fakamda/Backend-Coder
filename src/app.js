@@ -13,6 +13,7 @@ import cookieParser from "cookie-parser";
 import sessionsRouter from './router/sessions.routes.js'
 import MongoConnection from './database.js'
 import { socketServerConnection } from './socketServer.js'
+import { passportCall } from './middlewares/auth.middleware.js'
 
 const app = express()
 
@@ -56,9 +57,9 @@ try {
    })
 
     app.use("/api/products", ProductRouter);
-    app.use("/api/carts", CartRouter);
-    app.use("/products", viewsRouter);
-    app.use("/session", sessionsRouter);
+    app.use("/api/carts", passportCall("jwt"), CartRouter);
+    app.use("/products", passportCall("jwt"), viewsRouter);
+    app.use("/session", sessionsRouter)
 
     socketServerConnection()
 

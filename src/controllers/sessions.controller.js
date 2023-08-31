@@ -38,8 +38,6 @@ export const currentViewController = (req, res) => {
   //   email: req.user.email,
   //   cart: req.user.cart
   // }
-
-  const user = req.user
-  console.log(user)
-  res.render("sessions/current" , user)
+  const user = req.user 
+  res.render("sessions/current", user)
 }
