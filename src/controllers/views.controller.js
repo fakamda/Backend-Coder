@@ -28,7 +28,7 @@ export const productsViewController = async (req, res) => {
 
     const result = await productModel.paginate(filter, options)
 
-    // const user = req.user
+    const user = req.user
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -54,7 +54,7 @@ export const productsViewController = async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
-      // user,
+      user,
     });
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });

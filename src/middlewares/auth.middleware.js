@@ -9,8 +9,8 @@ export const passportCall = (strategy) => {
             }
             if (!user) {
                 // Configuramos un objeto de usuario predeterminado con el rol "PUBLIC"
-                req.user = { role: "PUBLIC" };
-                return next();
+                req.user = { role: "PUBLIC" }
+                return next()
             }
             
             req.user = user;

@@ -53,7 +53,8 @@ try {
   await MongoConnection.getInstance()
 
    app.get("/", (req, res) => {
-    res.render("index", { name:"Facundo" })
+    const user = req.user
+    res.render("index", { name:"Facundo", user })
    })
 
     app.use("/api/products", ProductRouter);
