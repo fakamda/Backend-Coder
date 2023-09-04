@@ -1,4 +1,5 @@
 import { JWT_COOKIE_NAME } from "../config/config.js";
+import UserDTO from "../dto/user.dto.js";
 
 export const userLoginController = async (req, res) => {
   if (!req.user) {
@@ -31,13 +32,8 @@ export const loginViewController = (req, res) => {
 }
 
 export const currentViewController = (req, res) => {
-  
-  // const user = {
-  //   first_name: req.user.first_name,
-  //   last_name: req.user.last_name,
-  //   email: req.user.email,
-  //   cart: req.user.cart
-  // }
-  const user = req.user 
-  res.render("sessions/current", user)
+  const user = new UserDTO(req.user)
+  // const user = req.user 
+  console.log({user})
+  res.render("sessions/current", { user })
 }

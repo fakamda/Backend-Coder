@@ -8,6 +8,8 @@ const ticketSchema = new mongoose.Schema ({
 })
 
 
-mongoose.set('stringQuery', false)
+mongoose.set("strictQuery", false);
 
-export const ticketModel = mongoose.model("ticket", ticketSchema)
+const ticketModel = mongoose.model("ticket", ticketSchema)
+
+ export default ticketModel

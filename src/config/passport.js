@@ -29,7 +29,7 @@ const initializePassport = () => {
             errors.push({ text: 'Password must be at least 4 characters' });
         }
     
-        const existUser = await UserModel.findOne({ email });
+        const existUser = await UserModel.findOne({ email }); //findone
         if (existUser) {
             errors.push({ text: 'The user already exists.' });
         }
@@ -39,7 +39,7 @@ const initializePassport = () => {
         if (errors.length > 0) {
             return done(null, false, { errors });
         } else {
-            const cartForNewUser = await cartModel.create({})
+            const cartForNewUser = await cartModel.create({}) // create
             // Create a new user
             const newUser = new UserModel({
                 first_name,
@@ -61,7 +61,7 @@ const initializePassport = () => {
         passwordField: 'password'
     } , async (email, password, done) => {
 
-        const user = await UserModel.findOne({ email })
+        const user = await UserModel.findOne({ email }) //findone
         if (!user) {
             return done(null, false, { message: 'User not found' })
         } else {
@@ -88,9 +88,9 @@ const initializePassport = () => {
     }, async(accesToken, refreshToken, profile, done) => {
 
         try {
-            const user = await UserModel.findOne({ email: profile._json.email })
+            const user = await UserModel.findOne({ email: profile._json.email }) //findone
             if (user) return done(null, user)
-            const newUser = await UserModel.create({
+            const newUser = await UserModel.create({  //create
                 first_name: profile._json.name,
                 email: profile._json.email,
                 password: " " ,
@@ -117,7 +117,7 @@ const initializePassport = () => {
     })
     
     passport.deserializeUser(async (id, done) => {
-        const user = await UserModel.findById(id)
+        const user = await UserModel.findById(id) //find by id
         done(null, user) 
     })
 

@@ -21,3 +21,29 @@ export const extractCookie = req => {
 }
 
 //  MIDDLEWARE DEBERIA IR EN CARPETA MIDDLEWARE
+
+export const generateTicketCode = () => {
+    // Generate a random number between 1000 and 9999
+    const randomPart = Math.floor(Math.random() * 9000) + 1000;
+  
+    // Get the current timestamp and convert it to a string
+    const timestampPart = new Date().getTime().toString();
+  
+    // Combine the random part and timestamp part to create a unique code
+    const ticketCode = randomPart + timestampPart;
+  
+    return ticketCode;
+  }
+
+
+//   export const calculateTotalAmount = (products) => {
+//     let totalAmount = 0;
+  
+//     for (const product of products) {
+//       // El costo de cada producto se calcula multiplicando su precio por la cantidad comprada.
+//       const productCost = product.price * product.quantity;
+//       totalAmount += productCost;
+//     }
+  
+//     return totalAmount;
+//   }
