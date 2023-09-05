@@ -21,7 +21,6 @@ export const passportCall = (strategy) => {
 
 export const handlePolicies = allowedRoles => (req, res, next) => {
     const user = req.user || { role: "PUBLIC" }; // Establecer un rol predeterminado como "PUBLIC" si no hay usuario autenticado
-    console.log(user)
     if (user && user.role && !allowedRoles.includes(user.role.toUpperCase())) {
         return res.status(403).json({
             status: "error",

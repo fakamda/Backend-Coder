@@ -32,8 +32,6 @@ export const loginViewController = (req, res) => {
 }
 
 export const currentViewController = (req, res) => {
-  const user = new UserDTO(req.user)
-  // const user = req.user 
-  console.log({user})
+  const user = new UserDTO(req.user.user)
   res.render("sessions/current", { user })
 }

@@ -228,3 +228,10 @@ export const purchaseCartController = async (req, res) => {
     return res.status(500).json({ status: "error", error: error.message });
   }
 };
+
+export const getUserCartController = (req, res) => {
+  const userCart = req.user.user.cart 
+
+
+  res.json({ userCart });
+}

@@ -1,3 +1,4 @@
+import UserDTO from "../dto/user.dto.js"
 import productModel from "../models/product.model.js"
 import { ProductService } from '../services/index.js'
 
@@ -29,15 +30,6 @@ export const getProductsWithLimit =  async (req, res) => {
 
     // const result = await productModel.paginate(filter, options) // paginate
     const result = await ProductService.getFilter(filter, options)
-    
-
-    // const user = {
-    //   first_name : req.user.first_name,
-    //   last_name : req.user.last_name,
-    //   email : req.user.email,
-    //   role : req.user.role,
-    //   cart: req.user.cart
-    // }
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;

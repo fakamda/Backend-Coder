@@ -28,6 +28,8 @@ export const productsViewController = async (req, res) => {
 
     const result = await productModel.paginate(filter, options)
 
+    // const user = req.user.user || {}; // Asegúrate de tener un objeto user
+
     const user = req.user
 
     const totalCount = result.totalDocs;
@@ -54,7 +56,7 @@ export const productsViewController = async (req, res) => {
       hasNextPage,
       prevLink,
       nextLink,
-      user,
+      user
     });
   } catch (err) {
     res.status(500).json({ status: "error", error: err.message });
