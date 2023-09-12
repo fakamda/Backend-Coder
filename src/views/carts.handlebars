@@ -1,5 +1,5 @@
 
-<h2 class="h2-title">Products From cart with id = {{this.cid}}</h2>
+<h2 class="h2-title">Products in Cart</h2>
 
       <table class="table-container">
         <thead class="table-title">
@@ -29,6 +29,10 @@
           {{/each}}
         </tbody>
       </table>
+
+      <div class="dark">
+        <p class="h2-title">The total amount is ${{totalAmount}}</p>
+      </div>
       
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="/socket.io/socket.io.js"></script>

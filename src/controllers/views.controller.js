@@ -1,6 +1,7 @@
 import productModel from "../models/product.model.js";
 import messageModel from "../models/chat.model.js";
 import cartModel from "../models/cart.model.js";
+import { calculateTotalAmount } from "../utils.js";
 
 export const productsViewController = async (req, res) => {
   try {
@@ -145,7 +146,10 @@ export const cartViewController = async (req, res) => {
     const cid = req.params.cid
 
     const result = await cartModel.findById(cid).populate("products.product").lean().exec();
-    res.render("carts", { cid: result._id, products: result.products });
+
+    const totalAmount = calculateTotalAmount(result)
+
+    res.render("carts", { cid: result._id, products: result.products, totalAmount });
   } catch (error) {
     console.error(error);
     res.status(404).send("Carrito no encontrado");

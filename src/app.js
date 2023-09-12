@@ -19,7 +19,7 @@ import MockRouter from './router/mock.routes.js'
 const app = express()
 
 app.use(express.json())
-app.use(cookieParser())
+app.use(cookieParser()) // confugurar cookie firmada
 app.use(express.urlencoded({ extended: true }))
 
 

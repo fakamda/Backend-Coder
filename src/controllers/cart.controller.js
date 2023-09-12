@@ -2,7 +2,8 @@ import cartModel from "../models/cart.model.js"
 import productModel from "../models/product.model.js"
 import ticketModel from '../models/ticket.model.js'
 import { CartService, ProductService } from '../services/index.js'
-import { generateTicketCode } from "../utils.js"
+import { generateTicketCode, calculateTicketAmount } from "../utils.js"
+// import UserDTO from "../dto/user.dto.js"
 
 
 export const getCartsController = async (req, res) => {
@@ -18,13 +19,29 @@ export const getCartsController = async (req, res) => {
 
 export const getCartByIdController = async (req, res) => {
   try {
-    const cartId = req.params.cid
-      // const cart = await cartModel.findById(cartId) //GETBYID
-      const cart = await CartService.getById(cartId)
-      if (!cart) {
-        throw new Error("Cart not found")
+    const cartId = req.params.cid;
+    
+    // Obtener el carrito por su ID
+    const cart = await CartService.getById(cartId)
+    // Realiza la población en el controlador
+
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    // Calcular el monto total del carrito
+    let totalAmount = 0;
+
+    for (const item of cart.products) {
+      const product = item.product;
+      const quantity = item.quantity;
+
+      if (product && product.price) {
+        totalAmount += product.price * quantity;
       }
-      res.status(200).json({ status: "success", payload: cart })
+    }
+
+    res.status(200).json({ status: "success", payload: { cart, totalAmount } });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: "error", error: error.message });
@@ -175,13 +192,17 @@ export const purchaseCartController = async (req, res) => {
   try {
     const cartId = req.params.cid;
     const cart = await cartModel.findById(cartId);
+    const user = req.user.user
 
+    console.log(user)
     if (!cart) {
       throw new Error("Cart not found");
     }
 
     const ticketProducts = [];
     const failedToPurchase = [];
+
+    const totalAmount = await calculateTicketAmount(cart)
 
     for (const cartProduct of cart.products) {
       const productId = cartProduct.product;
@@ -205,16 +226,16 @@ export const purchaseCartController = async (req, res) => {
         failedToPurchase.push(product._id);
       }
     }
+    
 
     if (ticketProducts.length > 0) {
 
       const ticket = new ticketModel({
         code: generateTicketCode(),
         purchase_datetime: new Date(),
-        amount: 2000,  // MODIFICAR AMOUNT HARDCODEADO <------------------------------------
-        // purchaser: req.user.first_name || req.user.full_name,
-        purchaser: 'juanito',  // MODIFICAR USER HARDCODEADO <-----------------------------
-        products: ticketProducts, // Agrega los productos comprados al ticket
+        amount: totalAmount, 
+        purchaser: a, 
+        products: ticketProducts, 
       })
 
       await ticket.save();

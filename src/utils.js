@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { JWT_COOKIE_NAME, JWT_PRIVATE_KEY } from './config/config.js'
+import { ProductService } from './services/index.js'
 
 
 export const createHash = (password) => {
@@ -35,15 +36,39 @@ export const generateTicketCode = () => {
     return ticketCode;
   }
 
+  export const calculateTotalAmount = (cart) => {
+    let totalAmount = 0;
+  
+    for (const item of cart.products) {
+      const product = item.product;
+      const quantity = item.quantity;
+  
+      if (product && product.price) {
+        totalAmount += product.price * quantity;
+      }
+    }
+  
+    return totalAmount;
+  };
 
-//   export const calculateTotalAmount = (products) => {
-//     let totalAmount = 0;
+
+  export const calculateTicketAmount = async (cart) => {
+    let totalAmount = 0;
   
-//     for (const product of products) {
-//       // El costo de cada producto se calcula multiplicando su precio por la cantidad comprada.
-//       const productCost = product.price * product.quantity;
-//       totalAmount += productCost;
-//     }
+    for (const cartProduct of cart.products) {
+      const productId = cartProduct.product;
+      const desiredQuantity = cartProduct.quantity;
   
-//     return totalAmount;
-//   }
+      const product = await ProductService.getById(productId)
+  
+      if (!product) {
+        throw new Error("Product not found");
+      }
+  
+      if (product.stock >= desiredQuantity) {
+        totalAmount += product.price * desiredQuantity;
+      }
+    }
+  
+    return totalAmount;
+  };

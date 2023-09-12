@@ -8,7 +8,7 @@ export const passportCall = (strategy) => {
                 return res.status(401).json({ status: "error", error: "The token expired" });
             }
             if (!user) {
-                // Configuramos un objeto de usuario predeterminado con el rol "PUBLIC"
+                
                 req.user = { role: "PUBLIC" }
                 return next()
             }
@@ -20,7 +20,7 @@ export const passportCall = (strategy) => {
 }
 
 export const handlePolicies = allowedRoles => (req, res, next) => {
-    const user = req.user || { role: "PUBLIC" }; // Establecer un rol predeterminado como "PUBLIC" si no hay usuario autenticado
+    const user = req.user || { role: "PUBLIC" }; 
     if (user && user.role && !allowedRoles.includes(user.role.toUpperCase())) {
         return res.status(403).json({
             status: "error",
