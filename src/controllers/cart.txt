@@ -1,0 +1,76 @@
+import CartService from "../services/CartService.js";
+
+const cartService = new CartService();
+
+export const purchaseCartController = async (req, res) => {
+  try {
+    const cartId = req.params.cid;
+    const user = req.user.user;
+
+    console.log(user);
+
+    // Reemplazar la obtención del carrito con el método getById de CartService
+    const cart = await cartService.getById(cartId);
+
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    const ticketProducts = [];
+    const failedToPurchase = [];
+
+    const totalAmount = await calculateTicketAmount(cart);
+
+    for (const cartProduct of cart.products) {
+      const productId = cartProduct.product;
+      const desiredQuantity = cartProduct.quantity;
+
+      // Reemplazar la obtención del producto con el método getProductById de CartService
+      const product = await cartService.getProductById(productId);
+
+      if (!product) {
+        throw new Error("Product not found");
+      }
+
+      if (product.stock >= desiredQuantity) {
+        product.stock -= desiredQuantity;
+
+        // Reemplazar la actualización del producto con el método updateProduct de CartService
+        await cartService.updateProduct(productId, { stock: product.stock });
+
+        ticketProducts.push({
+          productId: product._id,
+          quantity: desiredQuantity,
+        });
+
+        // Eliminar el producto del carrito después de comprarlo
+        await cartService.removeProductFromCart(cartId, productId);
+      } else {
+        failedToPurchase.push(product._id);
+      }
+    }
+
+    if (ticketProducts.length > 0) {
+      const ticket = new ticketModel({
+        code: generateTicketCode(),
+        purchase_datetime: new Date(),
+        amount: totalAmount,
+        purchaser: `${req.user.user.first_name} ${req.user.user.last_name}` || null,
+        products: ticketProducts,
+      });
+
+      await ticket.save();
+
+      res.status(200).json({ status: "success", payload: ticket });
+    } else {
+      res.status(400).json({
+        status: "error",
+        message: "No products could be purchased",
+        failedProducts: failedToPurchase,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ status: "error", error: error.message });
+  }
+};

@@ -191,7 +191,7 @@ export const updateProductFromCartController = async (req, res) => {
 export const purchaseCartController = async (req, res) => {
   try {
     const cartId = req.params.cid;
-    const cart = await cartModel.findById(cartId);
+    let cart = await cartModel.findById(cartId);
     const user = req.user.user
 
     console.log(user)
@@ -222,6 +222,16 @@ export const purchaseCartController = async (req, res) => {
           productId: product._id,
           quantity: desiredQuantity,
         });
+
+        // Eliminar el producto del carrito después de comprarlo... para esto updateamos el carrito el $pull es un operador de bases no sql
+        const updatedCart = await cartModel.findByIdAndUpdate(
+          cartId,
+          {
+            $pull: { products: { product: productId } },
+          },
+          { new: true }
+        );
+        cart = updatedCart // Actualizar la referencia al carrito actualizado// se declara como let el carrito por que sino no se puede mutar.
       } else {
         failedToPurchase.push(product._id);
       }
@@ -234,7 +244,7 @@ export const purchaseCartController = async (req, res) => {
         code: generateTicketCode(),
         purchase_datetime: new Date(),
         amount: totalAmount, 
-        purchaser: a, 
+        purchaser: `${req.user.user.first_name} ${req.user.user.last_name}` || null, 
         products: ticketProducts, 
       })
 
@@ -248,7 +258,7 @@ export const purchaseCartController = async (req, res) => {
     console.log(error);
     return res.status(500).json({ status: "error", error: error.message });
   }
-};
+}
 
 export const getUserCartController = (req, res) => {
   const userCart = req.user.user.cart 
