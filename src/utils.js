@@ -17,11 +17,26 @@ export const generateToken = user => {
     return token
 }
 
+// export const generateToken = user => {
+//   const token = jwt.sign({ user }, JWT_PRIVATE_KEY, { expiresIn: '24h' });
+
+//   // Calcula la fecha de expiración del token actual
+//   const expirationDate = new Date().getTime() + 24 * 60 * 60 * 1000; // 24 horas 
+//   const renewalThreshold = 5 * 60 * 1000; // 5 minutos 
+//   // Si el token actual está a punto de expirar, genera un nuevo token
+//   if (expirationDate - Date.now() <= renewalThreshold) {
+//     const renewedToken = jwt.sign({ user }, JWT_PRIVATE_KEY, { expiresIn: '24h' });
+//     return renewedToken;
+//   }
+
+//   return token
+// };
+
 export const extractCookie = req => {
     return (req && req.cookies) ? req.cookies[JWT_COOKIE_NAME] : null
 }
 
-//  MIDDLEWARE DEBERIA IR EN CARPETA MIDDLEWARE
+//GENERAR EL TICKET
 
 export const generateTicketCode = () => {
   
@@ -32,6 +47,7 @@ export const generateTicketCode = () => {
     return ticketCode;
   }
 
+  // CALCULAR EL TOTAL EN EL CARRITO
   export const calculateTotalAmount = (cart) => {
     let totalAmount = 0;
   
@@ -47,7 +63,7 @@ export const generateTicketCode = () => {
     return totalAmount;
   };
 
-
+// CALCULAR EL TOTAL EN EL TICKET
   export const calculateTicketAmount = async (cart) => {
     let totalAmount = 0;
   

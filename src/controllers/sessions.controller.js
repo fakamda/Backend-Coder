@@ -30,7 +30,7 @@ export const registerViewController = (req, res) => {
 export const loginViewController = (req, res) => {
   res.render("sessions/login");
 }
-
+// render de current
 export const currentViewController = (req, res) => {
   const user = new UserDTO(req.user.user)
   res.render("sessions/current", { user })
