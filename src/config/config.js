@@ -15,3 +15,4 @@ export const JWT_COOKIE_NAME = process.env.JWT_COOKIE_NAME
 export const PERSISTENCE = process.env.PERSISTENCE
 export const NODEMAILER_USER = process.env.NODEMAILER_USER
 export const NODEMAILER_PASS = process.env.NODEMAILER_PASS
+export const ENVIRONMENT = process.env.ENVIRONMENT
