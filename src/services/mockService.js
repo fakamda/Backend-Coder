@@ -19,14 +19,6 @@ export const generateProduct = async () => {
 
 export const createProduct = async (req) => {
   const product = req.body;
-  if (!product.title || !product.price) {
-    return CustomError.createError({
-      name: "Product creation error",
-      cause: generateProductErrorInfo(product),
-      message: "Error typing to create a product",
-      code: EErrors.INVALID_TYPES_ERROR,
-    });
-  }
 
   const newProduct = {
     _id: faker.database.mongodbObjectId(),

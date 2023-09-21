@@ -1,6 +1,7 @@
-import UserDTO from "../dto/user.dto.js"
-import productModel from "../models/product.model.js"
 import { ProductService } from '../services/index.js'
+import EErrors from '../services/errors/enums.js'
+import CustomError from '../services/errors/custom_error.js'
+import { generateProductErrorInfo } from '../services/errors/info.js'
 
 
 
@@ -65,8 +66,7 @@ export const getProductsWithLimit =  async (req, res) => {
 
 export const getProductsController = async (req, res) => {
   try {
-    // const productManager = new ProductManager()
-    // const products = await productModel.find().lean().exec()// await getall
+
     const products = await ProductService.getAll()
     res.status(200).json({ status: "success", payload: products })
   } catch (err) {
@@ -78,7 +78,6 @@ export const getProductsController = async (req, res) => {
 export const getProductByIdController = async (req, res) => {
   try {
     const productId = req.params.pid
-    // const result = await productModel.findById(productId).lean().exec(); // getbyid
     const result = await ProductService.getById(productId)
     res.status(200).json({status: "success", payload: result})
   } catch (err) {
@@ -90,14 +89,28 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const product = req.body;
-    // const result = await productModel.create(product)
-    // const products = await productModel.find().lean().exec()
     const result = await ProductService.create(product)
     const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)
-    res.status(200).json({status: "success", payload: result})
-  } catch (err) {
-    res.status(500).json({ status: "error", error: err.message })
+    
+    if (!product.title || !product.price || !product.code || !product.category) {
+
+      throw CustomError.createError({
+        name: "Product create error",
+        cause: generateProductErrorInfo(product),
+        message: "Error when trying to create a product",
+        code: EErrors.INVALID_TYPES_ERROR,
+      })
+
+    } else {
+      res.status(200).json({status: "success", payload: result})
+    }
+  } catch (error) {
+    if (error.code === EErrors.INVALID_TYPES_ERROR) {
+      res.status(400).json({ status: "error", message: error.message, details: error.cause });
+    } else {
+      res.status(500).json({ status: "error", message: "Error interno del servidor", details: error.message });
+    }
   }
 }
 

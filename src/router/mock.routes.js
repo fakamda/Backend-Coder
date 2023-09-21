@@ -1,4 +1,4 @@
-import { createProductController, getProductsController } from "../controllers/mock.controller.js";
+import { createProductController, getProductsController } from "../controllers/mock.controller.js"
 import { Router } from "express";
 
 const router = Router()

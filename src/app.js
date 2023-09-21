@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import MongoConnection from './database.js'
 import { socketServerConnection } from './socketServer.js'
 import { passportCall } from './middlewares/auth.middleware.js'
+import compression from 'express-compression'
 
 import viewsRouter from './router/views.routes.js'
 import ProductRouter from './router/product.routes.js'
@@ -24,7 +25,10 @@ const app = express()
 app.use(express.json())
 app.use(cookieParser()) // confugurar cookie firmada
 app.use(express.urlencoded({ extended: true }))
-
+app.use(compression({
+  brotli: { enable: true }, zlib: {}
+})
+)
 
 app.use(
   session({
@@ -32,7 +36,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
   })
-)
+  )
 
 initializePassport()
 app.use(passport.initialize())
