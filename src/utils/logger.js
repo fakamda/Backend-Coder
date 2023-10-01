@@ -1,6 +1,6 @@
-import winston from "winston/lib/winston/config";
-import moment from "moment/moment";
-import { ENVIRONMENT } from "./src/config/config";
+import winston from 'winston'
+import moment from 'moment/moment.js';
+import { ENVIROMENT } from '../config/config.js';
 
 
 const customLevelsOptions = {
@@ -28,7 +28,7 @@ const customLevelsOptions = {
         levels: customLevelsOptions.levels,
         transports: [
           new winston.transports.Console({
-            level: "info",
+            level: "info", // si esta en prod muestra hasta info
             format: winston.format.combine(
               winston.format.timestamp({
                 format: moment().format("DD/MM/YYYY HH:mm:ss"),
@@ -39,7 +39,7 @@ const customLevelsOptions = {
           }),
           new winston.transports.File({
             filename: "./logs/errors.log",
-            level: "error",
+            level: "error", // GUARDA EN EL LOG HASTA ERROR
             format: winston.format.combine(
               winston.format.timestamp({
                 format: moment().format("DD/MM/YYYY HH:mm:ss"),
@@ -54,7 +54,7 @@ const customLevelsOptions = {
         levels: customLevelsOptions.levels,
         transports: [
           new winston.transports.Console({
-            level: "debug",
+            level: "debug", // en development muestra hasta debug
             format: winston.format.combine(
               winston.format.timestamp({
                 format: moment().format("DD/MM/YYYY HH:mm:ss"),
@@ -84,5 +84,6 @@ const customLevelsOptions = {
     ],
   });
   
-  const logger = createLogger(ENVIRONMENT);
+  const logger = createLogger(ENVIROMENT);
+
   export default logger;
