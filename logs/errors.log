@@ -13,3 +13,8 @@ http: Http {"timestamp":"30/09/2023 22:17:08"}
 info: Info {"timestamp":"30/09/2023 22:17:08"}
 warning: Warning {"timestamp":"30/09/2023 22:17:08"}
 error: Error {"timestamp":"30/09/2023 22:17:08"}
+debug: Debug {"timestamp":"01/10/2023 00:30:09"}
+http: Http {"timestamp":"01/10/2023 00:30:09"}
+info: Info {"timestamp":"01/10/2023 00:30:09"}
+warning: Warning {"timestamp":"01/10/2023 00:30:09"}
+error: Error {"timestamp":"01/10/2023 00:30:09"}

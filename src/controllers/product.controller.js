@@ -29,7 +29,6 @@ export const getProductsWithLimit =  async (req, res) => {
       lean: true,
     };
 
-    // const result = await productModel.paginate(filter, options) // paginate
     const result = await ProductService.getFilter(filter, options)
 
     const totalCount = result.totalDocs;
@@ -119,12 +118,12 @@ export const updateProductController = async (req, res) => {
   try {
     const productId = req.params.pid
     const data = req.body
-    // const result = await productModel.findByIdAndUpdate(productId, data, { new: true }).lean().exec()
+
     const result = await ProductService.update(productId, data)
     if (result === null) {
       throw new Error("Not Found");
     }
-    // const products = await productModel.find().lean().exec()
+
     const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)
     res.status(200).json({status: "success", payload: result})
@@ -138,14 +137,13 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
     try {
       const productId = req.params.pid
-      // const result = await productModel.findByIdAndDelete(productId).lean().exec()
+
       const result = await ProductService.delete(productId)
 
       if (result === null) {
         return res.status(404).json({ error: 'Not Found' });
       }
 
-      // const products = await productModel.find().lean().exec();
       const products = await ProductService.getAll()
       req.app.get("socketio").emit("updatedProducts", products);
 
