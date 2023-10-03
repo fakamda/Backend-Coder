@@ -216,6 +216,8 @@ export const purchaseCartController = async (req, res) => {
         ticketProducts.push({
           productId: product._id,
           quantity: desiredQuantity,
+          name: product.title,  // Include product name in ticket
+          price: product.price  // Include product price in ticket
         });
 
         // Eliminar el producto del carrito después de comprarlo... para esto updateamos el carrito el $pull es un operador de bases no sql
@@ -232,7 +234,6 @@ export const purchaseCartController = async (req, res) => {
       }
     }
     
-
     if (ticketProducts.length > 0) {
 
       const ticket = new ticketModel({
@@ -252,7 +253,6 @@ export const purchaseCartController = async (req, res) => {
       res.status(400).json({status: "error", message: "No products could be purchased", failedProducts: failedToPurchase});
     }
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ status: "error", error: error.message });
   }
 }
