@@ -11,6 +11,8 @@ import MongoConnection from './database.js'
 import { socketServerConnection } from './socketServer.js'
 import { passportCall } from './middlewares/auth.middleware.js'
 import compression from 'express-compression'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express';
 
 import viewsRouter from './router/views.routes.js'
 import ProductRouter from './router/product.routes.js'
@@ -19,16 +21,29 @@ import LoggerRouter from './router/logger.routes.js'
 import CartRouter from './router/carts.routes.js'
 import sessionsRouter from './router/sessions.routes.js'
 
+export const swaggerOptions = {
+  definition: {
+      openapi: '3.1.0',
+      info: {
+          title: 'Ecommerce para Proyecto Final de Coderhouse',
+          version: '1.0.0',
+      }
+  },
+  apis: [
+      `./docs/**/*.yaml`,
+  ],
+};
+const specs = swaggerJsdoc(swaggerOptions);
+
+
 
 const app = express()
 
 app.use(express.json())
 app.use(cookieParser()) // confugurar cookie firmada
 app.use(express.urlencoded({ extended: true }))
-app.use(compression({
-  brotli: { enable: true }, zlib: {}
-})
-)
+app.use(compression({brotli: { enable: true }, zlib: {} }))
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 app.use(
   session({
