@@ -25,7 +25,7 @@ export const swaggerOptions = {
   definition: {
       openapi: '3.1.0',
       info: {
-          title: 'Ecommerce para Proyecto Final de Coderhouse',
+          title: 'Ecommerce Facundo Dominguez',
           version: '1.0.0',
       }
   },

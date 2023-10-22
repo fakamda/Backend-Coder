@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { passportCall } from "../middlewares/auth.middleware.js";
-import { currentViewController, githubLoginController, githubPassportController, loginViewController, registerViewController, userLoginController, userLogoutController } from "../controllers/sessions.controller.js";
+import { currentViewController, forgetPasswordController, githubLoginController, githubPassportController, loginViewController, registerViewController, userLoginController, userLogoutController } from "../controllers/sessions.controller.js";
 
 const router = Router()
 
@@ -13,5 +13,7 @@ router.get('/githubcallback', passport.authenticate('github', {failureRedirect: 
 router.get('/register', registerViewController)
 router.get('/login', loginViewController)
 router.get('/current', passportCall("jwt"), currentViewController)
+
+router.post('/forget-password', forgetPasswordController)
 
 export default router
