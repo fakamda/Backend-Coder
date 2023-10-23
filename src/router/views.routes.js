@@ -10,5 +10,14 @@ router.get("/realtimeproducts", handlePolicies(["ADMIN", "USER", "PUBLIC"]), rea
 router.get("/chat", handlePolicies(["ADMIN", "USER"]), chatViewController)
 router.get('/carts/:cid', handlePolicies(["ADMIN", "USER"]), cartViewController)
 
+router.get('/forget-password', (req, res) => {
+    res.render('sessions/forget-password')
+})
+
+router.get('/reset-password/:token', (req, res) => {
+    res.redirect(`/api/sessions/verify-token/${req.params.token}`)
+})
+
+
 
 export default router

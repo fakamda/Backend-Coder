@@ -2,7 +2,7 @@ import { PERSISTENCE } from '../config/config.js'
 
 export let User
 
-switch (config.persistence) {
+switch (PERSISTENCE) {
     case 'MONGO': 
         const { default: UserDAO } = await import('../Dao/user.mongo.dao.js')
         User = UserDAO

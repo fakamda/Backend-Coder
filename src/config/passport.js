@@ -94,7 +94,7 @@ const initializePassport = () => {
                 first_name: profile._json.name,
                 email: profile._json.email,
                 password: " " ,
-                role: "user"
+                role: "premium"
             })
             // newUser.password = await newUser.encryptPassword(password);
             return done(null, newUser)

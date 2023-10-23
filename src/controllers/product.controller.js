@@ -116,8 +116,17 @@ export const createProductController = async (req, res) => {
 
 export const updateProductController = async (req, res) => {
   try {
+    const user = req.user.user
     const productId = req.params.pid
     const data = req.body
+    console.log(user)
+
+    if(user.role === 'premium') {
+      const product = await ProductService.getById(productId)
+      if(product.owner !== user.email) {
+        return res.status(403).json({ stauts: 'error', error: 'Not authorized!' })
+      }
+    }
 
     const result = await ProductService.update(productId, data)
     if (result === null) {
@@ -137,6 +146,14 @@ export const updateProductController = async (req, res) => {
 export const deleteProductController = async (req, res) => {
     try {
       const productId = req.params.pid
+      const user = req.user.user
+      console.log(user)
+      if(user.role === 'premium') {
+        const product = await ProductService.getById(productId)
+        if(product.owner !== user.email) {
+          return res.status(403).json({ stauts: 'error', error: 'Not authorized!' })
+        }
+      }
 
       const result = await ProductService.delete(productId)
 

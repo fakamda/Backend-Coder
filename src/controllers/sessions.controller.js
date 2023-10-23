@@ -1,7 +1,7 @@
 import { JWT_COOKIE_NAME, NODEMAILER_PASS, NODEMAILER_USER, PORT } from "../config/config.js";
 import UserDTO from "../dto/user.dto.js";
 import UserModel from '../models/user.model.js'
-import { generateRandomString } from "../utils.js";
+import { createHash, generateRandomString } from "../utils.js";
 import UserPasswordModel from '../models/password.model.js'
 import nodemailer from 'nodemailer'
 
@@ -39,6 +39,16 @@ export const currentViewController = (req, res) => {
   const user = new UserDTO(req.user.user)
   res.render("sessions/current", { user })
 }
+
+
+export const forgetPasswordviewController = (req, res) => {
+  res.render('sessions/forget-password')
+}
+
+export const resetPasswordviewController = (req, res) => {
+  res.redirect(`sessions/verify-token/${req.params.token}`)
+}
+
 // funciona ok
 export const forgetPasswordController = async (req, res) => {
   const email = req.body.email
@@ -67,4 +77,34 @@ export const forgetPasswordController = async (req, res) => {
    } catch (err) {
     res.status(500).json({ status: 'error', error: err.message })
    }
+}
+
+export const verifyTokenController = async (req, res) => {
+  const userPassword = await UserPasswordModel.findOne({ token: req.params.token })
+  if(!userPassword) {
+    return res.status(404).json({ status: 'error', error: 'Invalid token / the token has expired' })
+  }
+  const user = userPassword.email
+  res.render('sessions/reset-password', { user })
+}
+
+export const resetPasswordController = async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.params.user })
+    await UserModel.findByIdAndUpdate(user._id, { password: createHash(req.body.newPassword) })
+    res.json({ status: 'success', message: 'se ha creado una nueva contraseña' })
+    await UserPasswordModel.deleteOne({ email: req.params.user })
+  } catch (err) {
+    res.json({ status: 'error', error: err.message })
+  }
+}
+
+export const premiumUserController = async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.params.uid)
+    await UserModel.findByIdAndUpdate(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
+    res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
+  } catch (err) {
+    res.json({ status: 'error', error: err.message })
+  }
 }
