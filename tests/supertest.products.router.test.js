@@ -54,7 +54,7 @@ describe('Testing E-Commerce Lonne Open - Ruta /products - Method POST', () => {
                 .field('description', 'Descripcion de prueba')
                 .field('price', 1212)
                 .field('stock', 12)
-                .attach('thumbnail', absolutePath);
+                .attach('thumbnail', absolutePath)
 
             expect(response.status).to.equal(200);
         });
