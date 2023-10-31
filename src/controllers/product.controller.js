@@ -88,6 +88,12 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const product = req.body;
+    
+     product.owner =
+     req.user.user && req.user.user.role === "premium"
+       ? req.user.user._id
+       : "admin";
+
     const result = await ProductService.create(product)
     const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)
@@ -100,6 +106,8 @@ export const createProductController = async (req, res) => {
         message: "Error when trying to create a product",
         code: EErrors.INVALID_TYPES_ERROR,
       })
+
+      
 
     } else {
       res.status(200).json({status: "success", payload: result})
