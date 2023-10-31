@@ -16,3 +16,5 @@ export const PERSISTENCE = process.env.PERSISTENCE
 export const NODEMAILER_USER = process.env.NODEMAILER_USER
 export const NODEMAILER_PASS = process.env.NODEMAILER_PASS
 export const ENVIROMENT = process.env.ENVIROMENT
+export const ADM_USER = process.env.ADM_USER
+export const ADM_PASS = process.env.ADM_PASS

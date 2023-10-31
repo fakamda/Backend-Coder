@@ -1,66 +1,67 @@
-import chai from 'chai'
-import supertest from 'supertest'
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { promises as fs } from 'fs';
-import ProductService from '../src/daos/mongo/product.mongo.dao.js';
+import chai from "chai";
+import supertest from "supertest";
+import { PORT, SIGNED_COOKIE_KEY, ADM_PASS, ADM_USER } from '../src/config/config.js'
+import { faker } from "@faker-js/faker"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
 const expect = chai.expect
-const requester = supertest('http://localhost:8080')
+const requester = supertest(`http://localhost:${PORT}`)
 
-describe('Testing E-Commerce Lonne Open - Ruta /products - Method GET', () => {
-    it('Debería devolver Status 200 si existen Productos que mostrar', async () => {
-        const productsData = [
-            {
-                title: String, 
-            }
-        ];
+describe('Testing of E-commerce - Product Routes', () => {
+    let cookie
+    const user = {
+        email: ADM_USER,
+        password: ADM_PASS
+    }
+    const newProduct = {
+        title: faker.commerce.product(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price({ min: 100, max: 1000 }),
+        code: faker.string.alphanumeric(8),
+        category: faker.commerce.productName(),
+        stock: faker.number.int(50),
+        status: faker.datatype.boolean()
+    }
 
-        ProductService.getAll = async () => productsData;
+    it("You must log an user to see the products", async () => {
+        const result = await requester.post('/api/session/login').send(user)
+        const cookieResult = result.headers["set-cookie"][0]
+        expect(cookieResult).to.be.ok
+        cookie = {
+            name: cookieResult.split("=")[0],
+            value: cookieResult.split("=")[1]
+        }
+        expect(cookie.name).to.be.ok.and.eql(SIGNED_COOKIE_KEY)
+        expect(cookie.value).to.be.ok
+    })
 
-        const response = await requester.get('/products');
-        expect(response.status).to.equal(200);
-        const responseBody = response.text;
-        expect(typeof responseBody).to.equal('string');
-    });
-});
+    it("The endpoint GET /api/products must obtain all products", async () => {
+        const response = await requester
+            .get('/api/products')
+            .set("Cookie", [`${cookie.name}=${cookie.value}`])
+        expect(response.status).to.be.eql(200)
+        expect(response.body.payload).to.be.an('array')
+        expect(response.body.payload).to.have.lengthOf.above(0)
+    })
 
-describe('Testing E-Commerce Lonne Open - Ruta /products - Method POST', () => {
-    describe('Test de Productos', () => {
-        it('En el endpoint POST / debe registrar un producto', async () => {
-            const filename = 'pelota-test.png';
+    it("The endpoint GET /api/products/:id must obtain a product by it ID", async () => {
+        const pid = "64a8b6dc128db523144a7c84"
+        const response = await requester
+            .get(`/api/products/${pid}`)
+            .set("Cookie", [`${cookie.name}=${cookie.value}`])
+        expect(response.status).to.be.eql(200)
+        expect(response.body.payload).to.have.property("_id").equal(pid)
+        expect(response.body.payload).to.have.property("title")
+    })
 
-            const mockRequest = {
-                file: { filename },
-            };
+    it("The endpoint POST /api/products must create a product", async () => {
+        const response = await requester
+            .post('/api/products')
+            .set('cookie', [`${cookie.name}=${cookie.value}`])
+            .send(newProduct)
+        expect(response.status).to.be.eql(201)
+        expect(response.body.payload).to.have.property("_id")
+        expect(response.body.payload).to.have.property("title").eql(newProduct.title)
+    })
 
-            const imgDirectory = join(__dirname, 'img');
-            const absolutePath = join(imgDirectory, filename);
-
-            try {
-                await fs.access(absolutePath);
-            } catch (error) {
-                throw new Error(`File not found: ${absolutePath}`);
-            }
-
-            const response = await requester
-                .post('/products')
-                .field('title', 'Producto de prueba')
-                .field('category', 'Categoria de prueba')
-                .field('size', 'Talle de prueba')
-                .field('code', 'Codigo de prueba')
-                .field('description', 'Descripcion de prueba')
-                .field('price', 1212)
-                .field('stock', 12)
-                .attach('thumbnail', absolutePath)
-
-            expect(response.status).to.equal(200);
-        });
-    });
-});
-
-
-
-
+})
