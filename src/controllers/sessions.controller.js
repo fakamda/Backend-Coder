@@ -1,7 +1,7 @@
 import { JWT_COOKIE_NAME, NODEMAILER_PASS, NODEMAILER_USER, PORT } from "../config/config.js";
 import UserDTO from "../dto/user.dto.js";
 import UserModel from '../models/user.model.js'
-import { createHash, generateRandomString } from "../utils.js";
+import { createHash, generateRandomString, generateToken } from "../utils.js";
 import UserPasswordModel from '../models/password.model.js'
 import nodemailer from 'nodemailer'
 
@@ -9,7 +9,7 @@ export const userLoginController = async (req, res) => {
   if (!req.user) {
     res.status(400).send({ status: "error", error: "invalid credentials" })
   }
-  res.cookie(JWT_COOKIE_NAME, req.user.token).redirect('/products')
+  res.cookie(JWT_COOKIE_NAME, req.user.token, { signed: true }).redirect('/products')
 }
 
 export const userLogoutController = (req, res) => {

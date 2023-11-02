@@ -4,7 +4,7 @@ import { Server } from 'socket.io'
 import mongoose from 'mongoose'
 import passport from 'passport'
 import initializePassport from './config/passport.js'
-import { PORT, SESSION_SECRET_KEY } from './config/config.js'
+import { PORT, SESSION_SECRET_KEY, SIGNED_COOKIE_KEY } from './config/config.js'
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import MongoConnection from './database.js'
@@ -40,7 +40,7 @@ const specs = swaggerJsdoc(swaggerOptions);
 const app = express()
 
 app.use(express.json())
-app.use(cookieParser()) // confugurar cookie firmada
+app.use(cookieParser(SIGNED_COOKIE_KEY)) // confugurar cookie firmada
 app.use(express.urlencoded({ extended: true }))
 app.use(compression({brotli: { enable: true }, zlib: {} }))
 app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
