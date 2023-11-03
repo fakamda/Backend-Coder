@@ -70,6 +70,9 @@ export const addProductToCartController = async (req, res) => {
       throw new Error("Product not found");
     }
 
+    if (product.owner === req.user.user.email) {
+      return res.status(400).json({ status: 'error', error: 'You cannot buy your own products' })
+  }
 
     const cart = await CartService.getById(cid)
     if (!cart) {
