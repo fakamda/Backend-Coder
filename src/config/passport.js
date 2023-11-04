@@ -20,39 +20,50 @@ const initializePassport = () => {
         passwordField: 'password',
         passReqToCallback: true // This allows us to pass the request object to the callback
     }, async (req, email, password, done) => {
-    
-        const { first_name, last_name, age } = req.body;
-    
-        const errors = [];
-    
-        if (password.length < 4) {
-            errors.push({ text: 'Password must be at least 4 characters' });
-        }
-    
-        const existUser = await UserModel.findOne({ email }); //findone
-        if (existUser) {
-            errors.push({ text: 'The user already exists.' });
-        }
+        try {
+            const { first_name, last_name, age, role } = req.body;
+        
+            const errors = [];
+        
+            if (password.length < 4) {
+                errors.push({ text: 'Password must be at least 4 characters' });
+            }
+        
+            const existUser = await UserModel.findOne({ email }); //findone
+            if (existUser) {
+                errors.push({ text: 'The user already exists.' });
+            }
 
-       
-    
-        if (errors.length > 0) {
-            return done(null, false, { errors });
-        } else {
-            const cartForNewUser = await cartModel.create({}) // create
-            // Create a new user
-            const newUser = new UserModel({
-                first_name,
-                last_name,
-                email,
-                age,
-                password,
-                cart:  cartForNewUser._id
-            });
-            newUser.password = await newUser.encryptPassword(password);
-            await newUser.save();
-            return done(null, newUser);
+        
+        
+            if (errors.length > 0) {
+                return done(null, false, { errors });
+            } else {
+                const cartForNewUser = await cartModel.create({}) // create
+                // Create a new user
+                const newUser = new UserModel({
+                    first_name,
+                    last_name,
+                    email,
+                    age,
+                    password,
+                    cart:  cartForNewUser._id,
+                    role
+                });
+
+                // if (newUser.role != "user" && newUser.role != "premium" && newUser.role != "admin") {
+                //     throw new Error ("The role you are chosing does not exist")
+                    
+                // }
+                newUser.password = await newUser.encryptPassword(password);
+                await newUser.save();
+                return done(null, newUser);
+            }
+        } catch (err) {
+            console.log(err)
         }
+        
+        
     }))
 
 
@@ -94,9 +105,10 @@ const initializePassport = () => {
                 first_name: profile._json.name,
                 email: profile._json.email,
                 password: " " ,
+                cart: cartForNewUser._id,
                 role: "premium"
             })
-            // newUser.password = await newUser.encryptPassword(password);
+
             return done(null, newUser)
         } catch(err) {
             return done(`Error to login with GitHub => ${err.message}`)

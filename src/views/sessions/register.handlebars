@@ -25,6 +25,15 @@
               <div class="form-group">
                 <input type="password" class="form-control mb-4" name="password" id="password" placeholder="Password" required>
               </div>
+              <div class="form-group">
+                <label for="role" class="text-white mb-2">Please Choose your role</label>
+                {{!-- <input type="text" class="form-control mb-4" name="role" id="role" placeholder="Role" required> --}}
+                <select name="role" id="role" class="form-control mb-4">
+                  <option value="user">User</option>
+                  <option value="premium">Premium</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
               <div class="d-grid gap-2">
                 <button class="btn btn-primary" type="submit">Sign Up</button>
               </div>

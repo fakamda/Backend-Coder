@@ -43,7 +43,7 @@ describe("Testing E-Commerce - Rutas de sessions", () => {
     }
   });
 
-  it("El Endpoint GET /api/jwt/current debe devolver el perfil del usuario loggeado", async () => {
+  it("El Endpoint GET /api/session/current debe devolver el perfil del usuario loggeado", async () => {
     try {
       const response = await requester
         .get("/api/jwt/current")
