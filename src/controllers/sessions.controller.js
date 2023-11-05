@@ -1,4 +1,4 @@
-import { JWT_COOKIE_NAME, NODEMAILER_PASS, NODEMAILER_USER, PORT } from "../config/config.js";
+import { JWT_COOKIE_NAME, NODEMAILER_PASS, NODEMAILER_USER, PORT, SIGNED_COOKIE_KEY } from "../config/config.js";
 import UserDTO from "../dto/user.dto.js";
 import UserModel from '../models/user.model.js'
 import { createHash, generateRandomString, generateToken } from "../utils.js";
@@ -9,11 +9,11 @@ export const userLoginController = async (req, res) => {
   if (!req.user) {
     res.status(400).send({ status: "error", error: "invalid credentials" })
   }
-  res.cookie(JWT_COOKIE_NAME, req.user.token, { signed: true }).redirect('/products')
+  res.cookie(SIGNED_COOKIE_KEY, req.user.token, { signed: true }).redirect('/products')
 }
 
 export const userLogoutController = (req, res) => {
-  res.clearCookie(JWT_COOKIE_NAME).redirect('/')
+  res.clearCookie(SIGNED_COOKIE_KEY).redirect('/')
 }
 
 export const githubPassportController = async(req, res) => {}

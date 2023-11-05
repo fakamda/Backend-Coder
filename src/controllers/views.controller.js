@@ -31,7 +31,8 @@ export const productsViewController = async (req, res) => {
 
     // const user = req.user.user || {}; // Asegúrate de tener un objeto user
 
-    const user = req.user
+    const user = req.user.user
+    
 
     const totalCount = result.totalDocs;
     const totalPages = result.totalPages;
@@ -89,7 +90,7 @@ export const realTimeProductsViewController = async (req, res) => {
 
     const result = await productModel.paginate(filter, options);
 
-    const user = req.user
+    const user = req.user.user
 
 
     const totalCount = result.totalDocs;

@@ -80,7 +80,7 @@ try {
     res.render("index", { name:"Facundo", user })
    })
 
-    app.use("/api/products", ProductRouter);
+    app.use("/api/products",passportCall("jwt"), ProductRouter);
     app.use("/api/carts", passportCall("jwt"), CartRouter);
     app.use("/products", passportCall("jwt"), viewsRouter);
     app.use("/session", sessionsRouter)

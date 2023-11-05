@@ -7,7 +7,9 @@
       <th class="table-row">Code</th>
       <th class="table-row">Category</th>
       <th class="table-row">Stock</th>
+    {{!-- {{#if user.user}} --}}
       <th class="table-row">Actions</th>
+      {{!-- {{/if}} --}}
     </tr>
   </thead>
   <tbody id="tbody">
@@ -19,7 +21,9 @@
       <td class="table-row">{{this.code}}</td>
       <td class="table-row">{{this.category}}</td>
       <td class="table-row">{{this.stock}}</td>
+      {{!-- {{#if user.user}} --}}
         <td class="table-row">
+
         {{#if showDeleteButton}}
           <button class="btn btn-danger me-2" onclick="deleteProduct('{{this._id}}')" id="btnDelete"><i class="fa-sharp fa-solid fa-trash"></i></button>
           <button class="btn btn-warning"><i class="fa-solid fa-pen"></i></button>
@@ -29,6 +33,7 @@
           </button>
         {{/if}}
       </td>
+      {{!-- {{/if}} --}}
     </tr>
     {{/each}}
   </tbody>

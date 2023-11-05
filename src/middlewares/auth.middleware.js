@@ -20,7 +20,7 @@ export const passportCall = (strategy) => {
 }
 
 export const handlePolicies = allowedRoles => (req, res, next) => {
-    const user = req.user || { role: "PUBLIC" }; 
+    const user = req.user 
     if (user && user.role && !allowedRoles.includes(user.role.toUpperCase())) {
         return res.status(403).json({
             status: "error",

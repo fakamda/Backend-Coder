@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   cart: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
   age: { type: Number },
   password: { type: String, required: true },
-  role: { type: String, enum: ['user', 'admin', 'premium' ], default: 'user' },
+  role: { type: String , default: 'user' },
   documents: { type: [{ name: { type: String }, reference: { type: String }}], default: [] },
   status: { type: Boolean, default: false },
   profilePicture: { type: String },

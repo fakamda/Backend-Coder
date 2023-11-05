@@ -11,10 +11,10 @@
         and shop with ease. Join us and discover a new era in the world of Ecommerce.
     </p>
 </div>
-{{#if user}}
+{{#if user.user}}
     <div>
         <div class="text-center landing-page-background">
-            <p class="text-white mb-2">Hi, {{user.first_name}}!</p>
+            <p class="text-white mb-2">Hi, {{user.user.first_name}}!</p>
             <p class="text-white mb-4">Thanks for loggin in, Now discover our products</p>
             <a href="/products" class="btn btn-primary">See Our Products</a>
         </div>

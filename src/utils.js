@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-import { JWT_COOKIE_NAME, JWT_PRIVATE_KEY } from './config/config.js'
+import { JWT_COOKIE_NAME, JWT_PRIVATE_KEY, SIGNED_COOKIE_KEY } from './config/config.js'
 import { ProductService } from './services/index.js'
 
 
@@ -14,11 +14,12 @@ export const isValidPassword = (user, password) => {
 
 export const generateToken = user => {
     const token = jwt.sign({ user }, JWT_PRIVATE_KEY, { expiresIn: '24h' })
+    console.log(user)
     return token
 }
 
 export const extractCookie = req => {
-    return (req && req.cookies) ? req.cookies[JWT_COOKIE_NAME] : null
+    return (req && req.signedCookies) ? req.signedCookies[SIGNED_COOKIE_KEY] : null
 }
 
 //GENERAR EL TICKET

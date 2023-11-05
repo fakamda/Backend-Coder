@@ -88,12 +88,15 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   try {
     const product = req.body;
-    
-     product.owner =
-     req.user.user && req.user.user.role === "premium"
-       ? req.user.user._id
-       : "admin";
 
+    const user = req.user ? req.user.user : null;
+
+    // if (!user) {
+    //   throw new Error("Usuario no autenticado");
+    // }
+
+    console.log(user)
+    
     const result = await ProductService.create(product)
     const products = await ProductService.getAll()
     req.app.get("socketio").emit("updatedProducts", products)

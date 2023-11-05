@@ -38,8 +38,8 @@ const initializePassport = () => {
         
             if (errors.length > 0) {
                 return done(null, false, { errors });
-            } else {
-                const cartForNewUser = await cartModel.create({}) // create
+            } else { 
+               const cartForNewUser = await cartModel.create({}) // create
                 // Create a new user
                 const newUser = new UserModel({
                     first_name,
@@ -100,6 +100,7 @@ const initializePassport = () => {
 
         try {
             const user = await UserModel.findOne({ email: profile._json.email }) //findone
+            const cartForNewUser = await cartModel.create({}) 
             if (user) return done(null, user)
             const newUser = await UserModel.create({  //create
                 first_name: profile._json.name,
