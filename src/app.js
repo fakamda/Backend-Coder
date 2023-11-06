@@ -20,6 +20,7 @@ import MockRouter from './router/mock.routes.js'
 import LoggerRouter from './router/logger.routes.js'
 import CartRouter from './router/carts.routes.js'
 import sessionsRouter from './router/sessions.routes.js'
+import UserRouter from './router/user.routes.js'
 
 export const swaggerOptions = {
   definition: {
@@ -84,6 +85,7 @@ try {
     app.use("/api/carts", passportCall("jwt"), CartRouter);
     app.use("/products", passportCall("jwt"), viewsRouter);
     app.use("/session", sessionsRouter)
+    app.use("/api/users", passportCall("jwt"), UserRouter)
     app.use("/api/mock", MockRouter)
     app.use("/logger", LoggerRouter)
 
