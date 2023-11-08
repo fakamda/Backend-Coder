@@ -1,6 +1,6 @@
-import UserDTO from "../dto/user.dto"
-import UserModel from "../models/user.model"
-import { devLogger } from "../utils/logger"
+import UserDTO from "../dto/user.dto.js"
+import UserModel from "../models/user.model.js"
+import { devLogger } from "../utils/logger.js"
 
 export const premiumUserController = async (req, res) => {
     try {

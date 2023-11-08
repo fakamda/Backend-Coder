@@ -113,7 +113,7 @@ export const createProductController = async (req, res) => {
       
 
     } else {
-      res.status(200).json({status: "success", payload: result})
+      res.status(201).json({status: "success", payload: result})
     }
   } catch (error) {
     if (error.code === EErrors.INVALID_TYPES_ERROR) {

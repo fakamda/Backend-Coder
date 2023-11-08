@@ -24,7 +24,7 @@ describe('Testing of E-commerce - Product Routes', () => {
     }
 
     it("You must log an user to see the products", async () => {
-        const result = await requester.post('/api/session/login').send(user)
+        const result = await requester.post('/session/login').send(user)
         const cookieResult = result.headers["set-cookie"][0]
         expect(cookieResult).to.be.ok
         cookie = {

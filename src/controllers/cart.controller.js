@@ -80,7 +80,7 @@ export const addProductToCartController = async (req, res) => {
     }
 
     const existingProductIndex = cart.products.findIndex(
-      (item) => item.product.toString() === pid
+      (item) => item.product._id.toString() === pid.toString()
     );
 
     if (existingProductIndex !== -1) {
@@ -90,6 +90,7 @@ export const addProductToCartController = async (req, res) => {
         product: pid,
         quantity: 1,
       };
+
       cart.products.push(newProduct);
     }
 
@@ -103,27 +104,25 @@ export const addProductToCartController = async (req, res) => {
 
 export const removeProductFromCartController = async (req, res) => {
   try {
+    const cid = req.params.cid;
+    const pid = req.params.pid;
 
-    const cid = req.params.cid
-    const pid = req.params.pid
-
-    const cart = await CartService.getById(cid)
+    const cart = await CartService.getById(cid);
     if (!cart) {
       throw new Error("Cart not found");
     }
 
-    cart.products = cart.products.filter(
-      (item) => item.product.toString() !== pid
-    )
-
-    const result = await cart.save();
+    await CartService.removeProductFromCart(cart, pid)
     
-    res.json({ status: "success", payload: result });
+    const result = await cart.save();
+
+    res.status(200).json({ status: "success", payload: result });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: "error", error: error.message });
   }
-}
+};
+
 
 
 export const updateCartController = async (req, res) => {

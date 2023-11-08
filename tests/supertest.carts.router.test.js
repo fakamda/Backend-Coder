@@ -1,6 +1,6 @@
 import chai from "chai";
 import supertest from "supertest";
-import { PORT, SIGNED_COOKIE_KEY } from "../src/config/config.js";
+import { PORT, SIGNED_COOKIE_KEY, ADM_PASS, ADM_USER } from "../src/config/config.js";
 
 const expect = chai.expect;
 const requester = supertest(`http://localhost:${PORT}`);
@@ -8,14 +8,14 @@ const requester = supertest(`http://localhost:${PORT}`);
 describe("Testing E-Commerce - Rutas de Carrito", () => {
   let cookie;
   const user = {
-    email: "uwu@gmail.com",
-    password: "uwu22",
+    email: ADM_USER,
+    password: ADM_PASS,
   };
-  const userCart = "64d588b875da230ea07b9503";
-  const productID = "64a8b6dc128db523144a7c9e";
+  const userCart = "6546fb6d340e7a7f64f9440e";
+  const productID = "64a8b6dc128db523144a7c84";
 
   it("You must log an user to see the products", async () => {
-    const result = await requester.post("/api/session/login").send(user);
+    const result = await requester.post("/session/login").send(user);
     const cookieResult = result.headers["set-cookie"][0];
     expect(cookieResult).to.be.ok;
     cookie = {
@@ -26,12 +26,12 @@ describe("Testing E-Commerce - Rutas de Carrito", () => {
     expect(cookie.value).to.be.ok;
   });
 
-  it("The Endpoint GET /api/carts/:id Must obtain a cart by its ID", async () => {
+  it("The Endpoint GET /api/carts/:cid Must obtain a cart by its ID", async () => {
     const response = await requester
       .get(`/api/carts/${userCart}`)
       .set("Cookie", [`${cookie.name}=${cookie.value}`]);
     expect(response.status).to.equal(200);
-    expect(response.body.payload).to.have.property("_id").equal(userCart);
+    expect(response.body.payload.cart).to.have.property("_id").equal(userCart);
   });
 
   it("The Endpoint POST /api/carts/:cid/product/:pid must add a product to user cart", async () => {
@@ -42,9 +42,9 @@ describe("Testing E-Commerce - Rutas de Carrito", () => {
     expect(response.body.payload).to.have.property("_id").equal(userCart);
   });
 
-  it("The Endpoint DELETE /api/carts/:cid/product/:pid must delete a product from user cart", async () => {
+  it("The Endpoint DELETE /api/carts/:cid/products/:pid must delete a product from user cart", async () => {
     const response = await requester
-      .delete(`/api/carts/${userCart}/product/${productID}`)
+      .delete(`/api/carts/${userCart}/products/${productID}`)
       .set("Cookie", [`${cookie.name}=${cookie.value}`]);
     expect(response.status).to.equal(200);
   })

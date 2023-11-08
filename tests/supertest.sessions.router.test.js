@@ -17,7 +17,7 @@ describe("Testing E-Commerce - Rutas de sessions", () => {
   };
   it("Debe registrar un usuario", async () => {
     try {
-      const response = await requester.post("/api/jwt/register").send(mockUser);
+      const response = await requester.post("/session/register").send(mockUser);
       expect(response.status).to.equal(302);
     } catch (error) {
       throw error;
@@ -26,7 +26,7 @@ describe("Testing E-Commerce - Rutas de sessions", () => {
 
   it("Debe loggear un usuario y devolver una cookie", async () => {
     try {
-      const result = await requester.post("/api/session/login").send({
+      const result = await requester.post("/session/login").send({
         email: mockUser.email,
         password: mockUser.password,
       });
@@ -46,7 +46,7 @@ describe("Testing E-Commerce - Rutas de sessions", () => {
   it("El Endpoint GET /api/session/current debe devolver el perfil del usuario loggeado", async () => {
     try {
       const response = await requester
-        .get("/api/jwt/current")
+        .get("/session/current")
         .set("Cookie", [`${cookie.name}=${cookie.value}`]);
       expect(response.status).to.equal(200);
     } catch (error) {
