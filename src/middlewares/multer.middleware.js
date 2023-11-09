@@ -30,4 +30,5 @@ const CustomStorage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
+
 export const uploaders = multer({ storage: CustomStorage }).array("files");

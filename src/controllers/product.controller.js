@@ -87,15 +87,32 @@ export const getProductByIdController = async (req, res) => {
 
 export const createProductController = async (req, res) => {
   try {
-    const product = req.body;
+    // const product = req.body;
+    const product = {
+      title: req.body.title,
+      description: req.body.description,
+      price: parseFloat(req.body.price),
+      code: req.body.code,
+      category: req.body.category,
+      stock: parseInt(req.body.stock),
+      // thumbnail: [req?.files[0]?.originalname] || []
+      thumbnail: req.files?.map((file) => file.originalname) || [],
+    }
 
-    const user = req.user ? req.user.user : null;
+    console.log(req?.files[0]?.originalname)
 
-    // if (!user) {
-    //   throw new Error("Usuario no autenticado");
+    // console.log("req.body:", req.body);
+    // console.log("req.files:", req.files);
+    console.log(product)
+
+    // if (!req.files) {
+    //   devLogger.info("No image");
     // }
 
-    console.log(user)
+    // product.owner = 
+    // req.user.user && req.user.user.role === "premium" 
+    // ? req.user.user.email
+    // : "admin"
     
     const result = await ProductService.create(product)
     const products = await ProductService.getAll()
@@ -109,8 +126,6 @@ export const createProductController = async (req, res) => {
         message: "Error when trying to create a product",
         code: EErrors.INVALID_TYPES_ERROR,
       })
-
-      
 
     } else {
       res.status(201).json({status: "success", payload: result})
