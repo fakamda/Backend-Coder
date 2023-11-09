@@ -96,7 +96,7 @@ export const createProductController = async (req, res) => {
       category: req.body.category,
       stock: parseInt(req.body.stock),
       // thumbnail: [req?.files[0]?.originalname] || []
-      thumbnail: req.files?.map((file) => file.originalname) || [],
+      thumbnails: req.files?.map((file) => file.originalname) || [],
     }
 
     console.log(req?.files[0]?.originalname)
