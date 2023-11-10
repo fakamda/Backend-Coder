@@ -87,7 +87,11 @@ export const getProductByIdController = async (req, res) => {
 
 export const createProductController = async (req, res) => {
   try {
-    // const product = req.body;
+
+    if (!req.files) {
+      devLogger.info("No image");
+    }
+
     const product = {
       title: req.body.title,
       description: req.body.description,
@@ -95,24 +99,13 @@ export const createProductController = async (req, res) => {
       code: req.body.code,
       category: req.body.category,
       stock: parseInt(req.body.stock),
-      // thumbnail: [req?.files[0]?.originalname] || []
       thumbnails: req.files?.map((file) => file.originalname) || [],
     }
-
-    console.log(req?.files[0]?.originalname)
-
-    // console.log("req.body:", req.body);
-    // console.log("req.files:", req.files);
-    console.log(product)
-
-    // if (!req.files) {
-    //   devLogger.info("No image");
-    // }
-
-    // product.owner = 
-    // req.user.user && req.user.user.role === "premium" 
-    // ? req.user.user.email
-    // : "admin"
+    
+    product.owner = 
+    req.user.user && req.user.user.role === "premium" 
+    ? req.user.user.email
+    : "admin"
     
     const result = await ProductService.create(product)
     const products = await ProductService.getAll()

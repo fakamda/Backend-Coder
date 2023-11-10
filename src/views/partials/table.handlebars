@@ -22,10 +22,9 @@
       <td class="table-row">{{this.code}}</td>
       <td class="table-row">{{this.category}}</td>
       <td class="table-row">{{this.stock}}</td>
-      <td class="table-row">{{this.thumbnail}}</td>
-      
-      {{!-- {{#if user.user}} --}}
-        <td class="table-row">
+      <td class="table-row">{{this.thumbnails}}</td>
+      {{#if user.user}}
+        <td class="table-row w-25">
 
         {{#if showDeleteButton}}
           <button class="btn btn-danger me-2" onclick="deleteProduct('{{this._id}}')" id="btnDelete"><i class="fa-sharp fa-solid fa-trash"></i></button>
@@ -36,7 +35,7 @@
           </button>
         {{/if}}
       </td>
-      {{!-- {{/if}} --}}
+      {{/if}}
     </tr>
     {{/each}}
   </tbody>

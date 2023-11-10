@@ -41,7 +41,7 @@ const specs = swaggerJsdoc(swaggerOptions);
 const app = express()
 
 app.use(express.json())
-app.use(cookieParser(SIGNED_COOKIE_KEY)) // confugurar cookie firmada
+app.use(cookieParser(SIGNED_COOKIE_KEY))
 app.use(express.urlencoded({ extended: true }))
 app.use(compression({brotli: { enable: true }, zlib: {} }))
 app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));

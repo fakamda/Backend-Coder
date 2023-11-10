@@ -154,8 +154,6 @@ table {
 }
 
 .table-row {
-    /* border: 1px solid #333; */
-    /* border-radius: 4px; */
     text-align: center;
     height: 60px;
     width: 600px;
