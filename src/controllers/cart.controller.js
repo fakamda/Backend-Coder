@@ -218,8 +218,8 @@ export const purchaseCartController = async (req, res) => {
         ticketProducts.push({
           productId: product._id,
           quantity: desiredQuantity,
-          name: product.title,  // Include product name in ticket
-          price: product.price  // Include product price in ticket
+          name: product.title, 
+          price: product.price 
         });
 
         // Eliminar el producto del carrito después de comprarlo... para esto updateamos el carrito el $pull es un operador de bases no sql
@@ -230,7 +230,7 @@ export const purchaseCartController = async (req, res) => {
           },
           { new: true }
         );
-        cart = updatedCart // Actualizar la referencia al carrito actualizado// se declara como let el carrito por que sino no se puede mutar.
+        cart = updatedCart
       } else {
         failedToPurchase.push(product._id);
       }
