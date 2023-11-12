@@ -12,4 +12,6 @@ export const ProductService = new ProductRepository(new ProductDAO())
 export const CartService = new CartRepository(new CartDAO())
 export const UserService = new UserRepository(new UserDAO())
 
-
+// ticketService
+// chatService
+// passwordService

@@ -51,10 +51,6 @@ const initializePassport = () => {
                     role
                 });
 
-                // if (newUser.role != "user" && newUser.role != "premium" && newUser.role != "admin") {
-                //     throw new Error ("The role you are chosing does not exist")
-                    
-                // }
                 newUser.password = await newUser.encryptPassword(password);
                 await newUser.save();
                 return done(null, newUser);
